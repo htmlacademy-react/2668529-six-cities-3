@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Konstantin Chaykin](https://up.htmlacademy.ru/react-individual/3/user/2668529).
-* Наставник: `Неизвестно`.
+* Наставник: `Олег Глущенко`.
 
 ---
 

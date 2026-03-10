@@ -6,7 +6,7 @@ import OfferPage from '../../pages/offer-page/offer-page';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout.tsx';
-import {AuthorizationStatus} from '../../const';
+import {AuthorizationStatus, AppRoute} from '../../const';
 
 type AppProps = {
   offersCount: number;
@@ -19,7 +19,7 @@ function App({offersCount, authorizationStatus}: AppProps): JSX.Element {
     <BrowserRouter>
       <Routes>
         <Route
-          path="/"
+          path={AppRoute.Root}
           element={<Layout authorizationStatus={authorizationStatus} />}
         >
           <Route
@@ -27,15 +27,15 @@ function App({offersCount, authorizationStatus}: AppProps): JSX.Element {
             element={<MainPage offersCount={offersCount} />}
           />
           <Route
-            path="login"
+            path={AppRoute.Login}
             element={<LoginPage />}
           />
           <Route
-            path="offer/:id"
+            path={AppRoute.Offer}
             element={<OfferPage />}
           />
           <Route
-            path="favorites"
+            path={AppRoute.Favorites}
             element={(
               <PrivateRoute authorizationStatus={authorizationStatus}>
                 <FavoritesPage />
@@ -43,7 +43,7 @@ function App({offersCount, authorizationStatus}: AppProps): JSX.Element {
             )}
           />
           <Route
-            path="*"
+            path={AppRoute.NotFound}
             element={<NotFoundPage />}
           />
         </Route>

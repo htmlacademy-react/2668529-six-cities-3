@@ -7,4 +7,12 @@ enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
 }
 
-export { Settings, AuthorizationStatus };
+enum AppRoute {
+  Root = '/',
+  Login = '/login',
+  Favorites = '/favorites',
+  Offer = '/offer/:id',
+  NotFound = '*'
+}
+
+export { Settings, AuthorizationStatus, AppRoute };

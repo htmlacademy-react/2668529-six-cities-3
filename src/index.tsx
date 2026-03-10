@@ -11,7 +11,7 @@ root.render(
   <React.StrictMode>
     <App
       offersCount={Settings.OffersCount}
-      authorizationStatus={AuthorizationStatus.Auth}
+      authorizationStatus={AuthorizationStatus.NoAuth}
     />
   </React.StrictMode>
 );

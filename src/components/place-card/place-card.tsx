@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 type PlaceCardProps = {
   id: number;
@@ -13,16 +13,16 @@ type PlaceCardProps = {
 };
 
 function PlaceCard({
-                     id,
-                     cardClassName,
-                     isPremium = false,
-                     imageSrc,
-                     price,
-                     isBookmarked = false,
-                     ratingPercent,
-                     title,
-                     offerType,
-                   }: PlaceCardProps): JSX.Element {
+  id,
+  cardClassName,
+  isPremium = false,
+  imageSrc,
+  price,
+  isBookmarked = false,
+  ratingPercent,
+  title,
+  offerType,
+}: PlaceCardProps): JSX.Element {
   return (
     <article className={`${cardClassName}__card place-card`}>
       {isPremium && (
@@ -57,7 +57,7 @@ function PlaceCard({
             type="button"
           >
             <svg className="place-card__bookmark-icon" width={18} height={19}>
-              <use xlinkHref="#icon-bookmark"/>
+              <use xlinkHref="#icon-bookmark" />
             </svg>
             <span className="visually-hidden">
               {isBookmarked ? 'In bookmarks' : 'To bookmarks'}
@@ -67,7 +67,7 @@ function PlaceCard({
 
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${ratingPercent}%`}}/>
+            <span style={{ width: `${ratingPercent}%` }} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

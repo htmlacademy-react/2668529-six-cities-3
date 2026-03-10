@@ -1,5 +1,3 @@
-import Footer from '../../components/footer/footer';
-
 function FavoritesPage(): JSX.Element {
 
   return (
@@ -133,7 +131,6 @@ function FavoritesPage(): JSX.Element {
           </section>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

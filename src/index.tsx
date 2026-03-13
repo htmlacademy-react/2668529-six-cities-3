@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app.tsx';
-import {Settings, AuthorizationStatus} from './const';
+import {AuthorizationStatus} from './const';
+import {offers} from './mocks/offers';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -10,7 +11,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <App
-      offersCount={Settings.OffersCount}
+      offers={offers}
       authorizationStatus={AuthorizationStatus.NoAuth}
     />
   </React.StrictMode>

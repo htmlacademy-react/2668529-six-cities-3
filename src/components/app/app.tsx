@@ -7,13 +7,14 @@ import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout.tsx';
 import {AuthorizationStatus, AppRoute} from '../../const';
+import {Offer} from '../../types/offer';
 
 type AppProps = {
-  offersCount: number;
+  offers: Offer[];
   authorizationStatus: AuthorizationStatus;
 };
 
-function App({offersCount, authorizationStatus}: AppProps): JSX.Element {
+function App({offers, authorizationStatus}: AppProps): JSX.Element {
 
   return (
     <BrowserRouter>
@@ -24,7 +25,7 @@ function App({offersCount, authorizationStatus}: AppProps): JSX.Element {
         >
           <Route
             index
-            element={<MainPage offersCount={offersCount}/>}
+            element={<MainPage offers={offers} />}
           />
           <Route
             path={AppRoute.Login}

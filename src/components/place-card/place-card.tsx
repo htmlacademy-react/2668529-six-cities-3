@@ -1,28 +1,15 @@
-import { Link } from 'react-router-dom';
+import {Link, generatePath} from 'react-router-dom';
+import {AppRoute} from '../../const';
+import {Offer} from '../../types/offer';
 
 type PlaceCardProps = {
-  id: number;
+  offer: Offer;
   cardClassName: string;
-  isPremium?: boolean;
-  imageSrc: string;
-  price: number;
-  isBookmarked?: boolean;
-  ratingPercent: number;
-  title: string;
-  offerType: string;
 };
 
-function PlaceCard({
-  id,
-  cardClassName,
-  isPremium = false,
-  imageSrc,
-  price,
-  isBookmarked = false,
-  ratingPercent,
-  title,
-  offerType,
-}: PlaceCardProps): JSX.Element {
+function PlaceCard({offer, cardClassName}: PlaceCardProps): JSX.Element {
+  const {id, title, type, price, previewImage, isPremium, isFavorite, rating} = offer;
+
   return (
     <article className={`${cardClassName}__card place-card`}>
       {isPremium && (
@@ -32,10 +19,10 @@ function PlaceCard({
       )}
 
       <div className={`${cardClassName}__image-wrapper place-card__image-wrapper`}>
-        <Link to={`/offer/${id}`}>
+        <Link to={generatePath(AppRoute.Offer, {id: String(id)})}>
           <img
             className="place-card__image"
-            src={imageSrc}
+            src={previewImage}
             width={260}
             height={200}
             alt="Place image"
@@ -52,7 +39,7 @@ function PlaceCard({
 
           <button
             className={`place-card__bookmark-button button ${
-              isBookmarked ? 'place-card__bookmark-button--active' : ''
+              isFavorite ? 'place-card__bookmark-button--active' : ''
             }`}
             type="button"
           >
@@ -60,23 +47,25 @@ function PlaceCard({
               <use xlinkHref="#icon-bookmark" />
             </svg>
             <span className="visually-hidden">
-              {isBookmarked ? 'In bookmarks' : 'To bookmarks'}
+              {isFavorite ? 'In bookmarks' : 'To bookmarks'}
             </span>
           </button>
         </div>
 
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${ratingPercent}%` }} />
+            <span style={{ width: `${rating * 20}%` }} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
 
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{title}</Link>
+          <Link to={generatePath(AppRoute.Offer, {id: String(id)})}>
+            {title}
+          </Link>
         </h2>
 
-        <p className="place-card__type">{offerType}</p>
+        <p className="place-card__type">{type}</p>
       </div>
     </article>
   );

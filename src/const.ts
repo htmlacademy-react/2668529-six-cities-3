@@ -1,7 +1,3 @@
-const Settings = {
-  OffersCount: 312
-};
-
 enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
@@ -15,4 +11,4 @@ enum AppRoute {
   NotFound = '*'
 }
 
-export {Settings, AuthorizationStatus, AppRoute};
+export {AuthorizationStatus, AppRoute};

@@ -12,7 +12,7 @@ root.render(
   <React.StrictMode>
     <App
       offers={offers}
-      authorizationStatus={AuthorizationStatus.NoAuth}
+      authorizationStatus={AuthorizationStatus.Auth}
     />
   </React.StrictMode>
 );

@@ -87,6 +87,6 @@ export const offers = [
     ],
     isPremium: true,
     isFavorite: true,
-    rating: 4.8,
+    rating: 3,
   }
 ];

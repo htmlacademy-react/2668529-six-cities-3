@@ -4,10 +4,10 @@ import {Offer} from '../../types/offer';
 type OffersListProps = {
   offers: Offer[];
   cardClassName: string;
-  onCardHover?: (offerId: number | null) => void;
+  handleHover?: (offerId: number | null) => void;
 };
 
-function OffersList({offers, cardClassName, onCardHover}: OffersListProps): JSX.Element {
+function OffersList({offers, cardClassName, handleHover}: OffersListProps): JSX.Element {
   return (
     <>
       {offers.map((offer) => (
@@ -15,7 +15,7 @@ function OffersList({offers, cardClassName, onCardHover}: OffersListProps): JSX.
           key={offer.id}
           offer={offer}
           cardClassName={cardClassName}
-          onHover={onCardHover}
+          handleHover={handleHover}
         />
       ))}
     </>

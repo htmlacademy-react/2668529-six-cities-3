@@ -1,21 +1,31 @@
 import {ChangeEvent, FormEvent, useState} from 'react';
 
+const MIN_REVIEW_LENGTH = 50;
+const MAX_REVIEW_LENGTH = 300;
+
 function ReviewForm(): JSX.Element {
-  const [comment, setComment] = useState('');
-  const [rating, setRating] = useState('');
+  const [review, setReview] = useState('');
+  const [rating, setRating] = useState(0);
 
-  const isSubmitDisabled = rating === '' || comment.length < 50;
+  const isSubmitDisabled = rating === 0 || review.length < MIN_REVIEW_LENGTH || review.length > MAX_REVIEW_LENGTH;
 
-  const handleCommentChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(evt.target.value);
+  const handleReviewChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+    setReview(evt.target.value);
   };
 
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setRating(evt.target.value);
+    setRating(Number(evt.target.value));
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+    const formData = {
+      review,
+      rating,
+    };
+    console.log(formData);
+    setReview('');
+    setRating(0);
   };
 
   return (
@@ -31,7 +41,7 @@ function ReviewForm(): JSX.Element {
           value="5"
           id="5-stars"
           type="radio"
-          checked={rating === '5'}
+          checked={rating === 5}
           onChange={handleRatingChange}
         />
         <label htmlFor="5-stars" className="reviews__rating-label form__rating-label" title="perfect">
@@ -46,7 +56,7 @@ function ReviewForm(): JSX.Element {
           value="4"
           id="4-stars"
           type="radio"
-          checked={rating === '4'}
+          checked={rating === 4}
           onChange={handleRatingChange}
         />
         <label htmlFor="4-stars" className="reviews__rating-label form__rating-label" title="good">
@@ -61,7 +71,7 @@ function ReviewForm(): JSX.Element {
           value="3"
           id="3-stars"
           type="radio"
-          checked={rating === '3'}
+          checked={rating === 3}
           onChange={handleRatingChange}
         />
         <label htmlFor="3-stars" className="reviews__rating-label form__rating-label" title="not bad">
@@ -76,7 +86,7 @@ function ReviewForm(): JSX.Element {
           value="2"
           id="2-stars"
           type="radio"
-          checked={rating === '2'}
+          checked={rating === 2}
           onChange={handleRatingChange}
         />
         <label htmlFor="2-stars" className="reviews__rating-label form__rating-label" title="badly">
@@ -91,7 +101,7 @@ function ReviewForm(): JSX.Element {
           value="1"
           id="1-star"
           type="radio"
-          checked={rating === '1'}
+          checked={rating === 1}
           onChange={handleRatingChange}
         />
         <label htmlFor="1-star" className="reviews__rating-label form__rating-label" title="terribly">
@@ -106,8 +116,8 @@ function ReviewForm(): JSX.Element {
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        value={comment}
-        onChange={handleCommentChange}
+        value={review}
+        onChange={handleReviewChange}
       />
 
       <div className="reviews__button-wrapper">
@@ -116,7 +126,7 @@ function ReviewForm(): JSX.Element {
           {' '}
           and describe your stay with at least
           {' '}
-          <b className="reviews__text-amount">50 characters</b>.
+          <b className="reviews__text-amount">{MIN_REVIEW_LENGTH} characters</b>.
         </p>
         <button
           className="reviews__submit form__submit button"

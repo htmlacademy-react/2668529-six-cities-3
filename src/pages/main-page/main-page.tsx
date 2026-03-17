@@ -104,7 +104,7 @@ function MainPage({offers}: MainPageProps): JSX.Element {
                   <OffersList
                     offers={offers}
                     cardClassName="cities"
-                    onCardHover={setActiveOfferId}
+                    handleHover={setActiveOfferId}
                   />
                 </div>
               </section>

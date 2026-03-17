@@ -5,20 +5,28 @@ import {Offer} from '../../types/offer';
 type PlaceCardProps = {
   offer: Offer;
   cardClassName: string;
-  onHover?: (offerId: number | null) => void;
+  handleHover?: (offerId: number | null) => void;
 };
 
-function PlaceCard({offer, cardClassName, onHover}: PlaceCardProps): JSX.Element {
+function PlaceCard({offer, cardClassName, handleHover}: PlaceCardProps): JSX.Element {
   const {id, title, type, price, previewImage, isPremium, isFavorite, rating} = offer;
   const offerPath = generatePath(AppRoute.Offer, {id: String(id)});
   const imageWidth = cardClassName === 'favorites' ? 150 : 260;
   const imageHeight = cardClassName === 'favorites' ? 110 : 200;
 
+  const handleMouseOn = () => {
+    handleHover?.(id);
+  }
+
+  const handleMouseOff = () => {
+    handleHover?.(null);
+  }
+
   return (
     <article
       className={`${cardClassName}__card place-card`}
-      onMouseEnter={() => onHover?.(id)}
-      onMouseLeave={() => onHover?.(null)}
+      onMouseEnter={handleMouseOn}
+      onMouseLeave={handleMouseOff}
     >
       {isPremium && (
         <div className="place-card__mark">

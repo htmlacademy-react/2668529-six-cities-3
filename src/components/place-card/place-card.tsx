@@ -16,11 +16,11 @@ function PlaceCard({offer, cardClassName, handleHover}: PlaceCardProps): JSX.Ele
 
   const handleMouseOn = () => {
     handleHover?.(id);
-  }
+  };
 
   const handleMouseOff = () => {
     handleHover?.(null);
-  }
+  };
 
   return (
     <article

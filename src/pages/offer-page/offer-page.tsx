@@ -10,14 +10,13 @@ type OfferPageProps = {
 };
 
 function OfferPage({offers, authorizationStatus}: OfferPageProps): JSX.Element {
+  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
   const {id} = useParams();
   const offer = offers.find((item) => item.id === Number(id));
 
   if (!offer) {
     return <NotFoundPage />;
   }
-
-  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
 
   return (
     <main className="page__main page__main--offer">

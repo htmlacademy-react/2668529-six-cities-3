@@ -86,7 +86,7 @@ export const offers = [
       'img/apartment-small-04.jpg',
     ],
     isPremium: true,
-    isFavorite: false,
+    isFavorite: true,
     rating: 4.8,
   }
 ];

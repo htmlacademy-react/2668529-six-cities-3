@@ -11,6 +11,8 @@ type PlaceCardProps = {
 function PlaceCard({offer, cardClassName, onHover}: PlaceCardProps): JSX.Element {
   const {id, title, type, price, previewImage, isPremium, isFavorite, rating} = offer;
   const offerPath = generatePath(AppRoute.Offer, {id: String(id)});
+  const imageWidth = cardClassName === 'favorites' ? 150 : 260;
+  const imageHeight = cardClassName === 'favorites' ? 110 : 200;
 
   return (
     <article
@@ -29,8 +31,8 @@ function PlaceCard({offer, cardClassName, onHover}: PlaceCardProps): JSX.Element
           <img
             className="place-card__image"
             src={previewImage}
-            width={260}
-            height={200}
+            width={imageWidth}
+            height={imageHeight}
             alt="Place image"
           />
         </Link>

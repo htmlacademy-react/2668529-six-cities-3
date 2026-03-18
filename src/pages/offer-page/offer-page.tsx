@@ -73,11 +73,13 @@ function OfferPage({offers, authorizationStatus}: OfferPageProps): JSX.Element {
               <li className="offer__feature offer__feature--entire">
                 {currentOffer.type}
               </li>
+
               <li className="offer__feature offer__feature--bedrooms">
-                3 Bedrooms
+                {currentOffer.bedrooms} {currentOffer.bedrooms === 1 ? 'Bedroom' : 'Bedrooms'}
               </li>
+
               <li className="offer__feature offer__feature--adults">
-                Max 4 adults
+                Max {currentOffer.maxAdults} {currentOffer.maxAdults === 1 ? 'adult' : 'adults'}
               </li>
             </ul>
 
@@ -88,18 +90,12 @@ function OfferPage({offers, authorizationStatus}: OfferPageProps): JSX.Element {
 
             <div className="offer__inside">
               <h2 className="offer__inside-title">What&apos;s inside</h2>
-
               <ul className="offer__inside-list">
-                <li className="offer__inside-item">Wi-Fi</li>
-                <li className="offer__inside-item">Washing machine</li>
-                <li className="offer__inside-item">Towels</li>
-                <li className="offer__inside-item">Heating</li>
-                <li className="offer__inside-item">Coffee machine</li>
-                <li className="offer__inside-item">Baby seat</li>
-                <li className="offer__inside-item">Kitchen</li>
-                <li className="offer__inside-item">Dishwasher</li>
-                <li className="offer__inside-item">Cabel TV</li>
-                <li className="offer__inside-item">Fridge</li>
+                {currentOffer.services.map((service) => (
+                  <li key={service} className="offer__inside-item">
+                    {service}
+                  </li>
+                ))}
               </ul>
             </div>
 

@@ -13,6 +13,9 @@ type Offer = {
     avatarUrl: string;
     isPro: boolean;
   };
+  services: string[];
+  bedrooms: number;
+  maxAdults: number;
 };
 
 export type {Offer};

@@ -111,7 +111,10 @@ function MainPage({offers}: MainPageProps): JSX.Element {
               </section>
 
               <div className="cities__right-section">
-                <Map offers={offers} />
+                <Map
+                  offers={offers}
+                  activeOfferId={activeOfferId}
+                />
               </div>
             </>
           )}

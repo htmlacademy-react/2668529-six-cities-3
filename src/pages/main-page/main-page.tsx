@@ -2,6 +2,7 @@ import {useState} from 'react';
 import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import {Offer} from '../../types/offer';
+import {CITIES} from '../../const';
 
 type MainPageProps = {
   offers: Offer[];
@@ -10,6 +11,7 @@ type MainPageProps = {
 function MainPage({offers}: MainPageProps): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<number | null>(null);
   const isEmpty = offers.length === 0;
+  const currentCity = 'Amsterdam';
 
   return (
     <main className={`page__main page__main--index ${isEmpty ? 'page__main--index-empty' : ''}`}>
@@ -18,36 +20,18 @@ function MainPage({offers}: MainPageProps): JSX.Element {
       <div className="tabs">
         <section className="locations container">
           <ul className="locations__list tabs__list">
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#todo">
-                <span>Paris</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#todo">
-                <span>Cologne</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#todo">
-                <span>Brussels</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item tabs__item--active" href="#todo">
-                <span>Amsterdam</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#todo">
-                <span>Hamburg</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#todo">
-                <span>Dusseldorf</span>
-              </a>
-            </li>
+            {CITIES.map((city) => (
+              <li className="locations__item" key={city}>
+                <a
+                  className={`locations__item-link tabs__item ${
+                    city === currentCity ? 'tabs__item--active' : ''
+                  }`}
+                  href="#todo"
+                >
+                  <span>{city}</span>
+                </a>
+              </li>
+            ))}
           </ul>
         </section>
       </div>

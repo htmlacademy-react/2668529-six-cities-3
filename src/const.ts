@@ -11,4 +11,13 @@ enum AppRoute {
   NotFound = '*'
 }
 
-export {AuthorizationStatus, AppRoute};
+const CITIES = [
+  'Paris',
+  'Cologne',
+  'Brussels',
+  'Amsterdam',
+  'Hamburg',
+  'Dusseldorf',
+] as const;
+
+export {AuthorizationStatus, AppRoute, CITIES};

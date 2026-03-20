@@ -1,11 +1,16 @@
 import ReviewItem from '../review-item/review-item';
+import ReviewForm from '../../components/review-form/review-form';
 import {Review} from '../../types/review';
+import {AuthorizationStatus} from '../../const';
 
 type ReviewsListProps = {
   reviews: Review[];
+  authorizationStatus: AuthorizationStatus;
 };
 
-function ReviewsList({reviews}: ReviewsListProps): JSX.Element {
+function ReviewsList({reviews, authorizationStatus}: ReviewsListProps): JSX.Element {
+  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
+
   return (
     <section className="offer__reviews reviews">
       <h2 className="reviews__title">
@@ -20,6 +25,8 @@ function ReviewsList({reviews}: ReviewsListProps): JSX.Element {
           />
         ))}
       </ul>
+
+      {isAuth && <ReviewForm />}
     </section>
   );
 }

@@ -18,7 +18,7 @@ const reviews: Review[] = [
     date: '2020-02-10',
     rating: 5,
     user: {
-      name: 'Angelina',
+      name: 'Clara',
       avatarUrl: 'img/avatar-angelina.jpg',
       isPro: true
     },

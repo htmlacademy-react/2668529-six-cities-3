@@ -1,7 +1,7 @@
 import {useParams} from 'react-router-dom';
 import {Offer} from '../../types/offer';
 import NotFoundPage from '../not-found-page/not-found-page';
-import PlaceCard from '../../components/place-card/place-card';
+import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import {reviews} from '../../mocks/reviews';
@@ -157,13 +157,10 @@ function OfferPage({offers, authorizationStatus}: OfferPageProps): JSX.Element {
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
-            {nearbyOffers.map((nearbyOffer) => (
-              <PlaceCard
-                key={nearbyOffer.id}
-                offer={nearbyOffer}
-                cardClassName="near-places"
-              />
-            ))}
+            <OffersList
+              offers={nearbyOffers}
+              cardClassName="near-places"
+            />
           </div>
         </section>
       </div>

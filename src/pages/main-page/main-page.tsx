@@ -1,14 +1,12 @@
 import {useState} from 'react';
-import OffersList from '../../components/offers-list/offers-list';
-import Map from '../../components/map/map';
-import {CITIES} from '../../const';
 import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch} from '../../store';
-import {State} from '../../store';
-import {changeCity} from '../../store/action';
+import OffersList from '../../components/offers-list/offers-list';
 import CitiesList from '../../components/cities-list/cities-list';
-import {SortType} from '../../const';
+import Map from '../../components/map/map';
 import Sorting from '../../components/sorting/sorting';
+import {CITIES, SortType} from '../../const';
+import {State, AppDispatch} from '../../store';
+import {changeCity} from '../../store/action';
 
 function MainPage(): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<number | null>(null);
@@ -16,8 +14,13 @@ function MainPage(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const currentCity = useSelector((state: State) => state.city);
   const offers = useSelector((state: State) => state.offers);
+
+  const handleCityChange = (city: string) => {
+    dispatch(changeCity(city));
+    setCurrentSort(SortType.Popular);
+  };
+
   const filteredOffers = offers.filter((offer) => offer.city.name === currentCity);
-  const isEmpty = filteredOffers.length === 0;
   const sortedOffers = [...filteredOffers];
 
   switch (currentSort) {
@@ -35,6 +38,8 @@ function MainPage(): JSX.Element {
       break;
   }
 
+  const isEmpty = sortedOffers.length === 0;
+
   return (
     <main className={`page__main page__main--index ${isEmpty ? 'page__main--index-empty' : ''}`}>
       <h1 className="visually-hidden">Cities</h1>
@@ -42,7 +47,7 @@ function MainPage(): JSX.Element {
       <CitiesList
         cities={CITIES}
         currentCity={currentCity}
-        onCityClick={(city) => dispatch(changeCity(city))}
+        onCityClick={handleCityChange}
       />
 
       <div className="cities">

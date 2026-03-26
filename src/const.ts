@@ -20,4 +20,18 @@ const CITIES = [
   'Dusseldorf',
 ] as const;
 
-export {AuthorizationStatus, AppRoute, CITIES};
+enum SortType {
+  Popular = 'Popular',
+  PriceLowToHigh = 'Price: low to high',
+  PriceHighToLow = 'Price: high to low',
+  TopRatedFirst = 'Top rated first',
+}
+
+const SORT_OPTIONS = [
+  SortType.Popular,
+  SortType.PriceLowToHigh,
+  SortType.PriceHighToLow,
+  SortType.TopRatedFirst,
+];
+
+export {AuthorizationStatus, AppRoute, CITIES, SORT_OPTIONS};

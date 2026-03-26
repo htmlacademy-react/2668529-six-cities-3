@@ -8,6 +8,14 @@ type Offer = {
   isPremium: boolean;
   isFavorite: boolean;
   rating: number;
+  city: {
+    name: string;
+    location: {
+      latitude: number;
+      longitude: number;
+      zoom: number;
+    };
+  };
   host: {
     name: string;
     avatarUrl: string;

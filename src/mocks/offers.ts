@@ -18,6 +18,14 @@ const offers: Offer[] = [
     isPremium: true,
     isFavorite: false,
     rating: 4.5,
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.37454,
+        longitude: 4.897976,
+        zoom: 12,
+      },
+    },
     host: {
       name: 'Angelina',
       avatarUrl: 'img/avatar-angelina.jpg',
@@ -60,6 +68,14 @@ const offers: Offer[] = [
     isPremium: false,
     isFavorite: true,
     rating: 4,
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.37454,
+        longitude: 4.897976,
+        zoom: 12,
+      },
+    },
     host: {
       name: 'Max',
       avatarUrl: 'img/avatar-max.jpg',
@@ -100,6 +116,14 @@ const offers: Offer[] = [
     isPremium: false,
     isFavorite: false,
     rating: 4.2,
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.37454,
+        longitude: 4.897976,
+        zoom: 12,
+      },
+    },
     host: {
       name: 'Nick',
       avatarUrl: 'img/avatar-max.jpg',
@@ -139,6 +163,14 @@ const offers: Offer[] = [
     isPremium: true,
     isFavorite: true,
     rating: 3.6,
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.37454,
+        longitude: 4.897976,
+        zoom: 12,
+      },
+    },
     host: {
       name: 'Clara',
       avatarUrl: 'img/avatar-angelina.jpg',

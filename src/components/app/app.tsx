@@ -20,7 +20,9 @@ type AppProps = {
 
 function App({authorizationStatus}: AppProps): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {dispatch(fillOffers(offers))}, [dispatch]);
+  useEffect(() => {
+    dispatch(fillOffers(offers));
+  }, [dispatch]);
 
   return (
     <BrowserRouter>

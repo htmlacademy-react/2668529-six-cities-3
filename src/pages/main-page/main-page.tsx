@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch} from '../../store';
 import {State} from '../../store';
 import {changeCity} from '../../store/action';
+import CitiesList from '../../components/cities-list/cities-list';
 
 function MainPage(): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<number | null>(null);
@@ -19,28 +20,11 @@ function MainPage(): JSX.Element {
     <main className={`page__main page__main--index ${isEmpty ? 'page__main--index-empty' : ''}`}>
       <h1 className="visually-hidden">Cities</h1>
 
-      <div className="tabs">
-        <section className="locations container">
-          <ul className="locations__list tabs__list">
-            {CITIES.map((city) => (
-              <li className="locations__item" key={city}>
-                <a
-                  className={`locations__item-link tabs__item ${
-                    city === currentCity ? 'tabs__item--active' : ''
-                  }`}
-                  href="#"
-                  onClick={(evt) => {
-                    evt.preventDefault();
-                    dispatch(changeCity(city));
-                  }}
-                >
-                  <span>{city}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </div>
+      <CitiesList
+        cities={CITIES}
+        currentCity={currentCity}
+        onCityClick={(city) => dispatch(changeCity(city))}
+      />
 
       <div className="cities">
         <div

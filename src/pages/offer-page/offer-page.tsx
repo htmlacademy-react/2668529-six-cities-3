@@ -20,7 +20,13 @@ function OfferPage({offers, authorizationStatus}: OfferPageProps): JSX.Element {
     return <NotFoundPage />;
   }
 
-  const nearbyOffers = offers.filter((item) => item.id !== currentOffer.id).slice(0, 3);
+  const nearbyOffers = offers
+    .filter((offer) =>
+      offer.city.name === currentOffer.city.name &&
+      offer.id !== currentOffer.id
+    )
+    .slice(0, 3);
+
   const mapOffers = [currentOffer, ...nearbyOffers];
 
   return (

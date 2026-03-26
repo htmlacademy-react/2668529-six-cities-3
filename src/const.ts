@@ -34,4 +34,4 @@ const SORT_OPTIONS = [
   SortType.TopRatedFirst,
 ];
 
-export {AuthorizationStatus, AppRoute, CITIES, SORT_OPTIONS};
+export {AuthorizationStatus, AppRoute, CITIES, SortType, SORT_OPTIONS};

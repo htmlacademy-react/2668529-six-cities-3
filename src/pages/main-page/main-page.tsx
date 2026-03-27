@@ -7,6 +7,7 @@ import Sorting from '../../components/sorting/sorting';
 import {CITIES, SortType} from '../../const';
 import {State, AppDispatch} from '../../store';
 import {changeCity} from '../../store/action';
+import {getOffersByCity, sortOffers} from '../../utils/offers-utils';
 
 function MainPage(): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<number | null>(null);
@@ -18,26 +19,11 @@ function MainPage(): JSX.Element {
   const handleCityChange = (city: string) => {
     dispatch(changeCity(city));
     setCurrentSort(SortType.Popular);
+    setActiveOfferId(null);
   };
 
-  const filteredOffers = offers.filter((offer) => offer.city.name === currentCity);
-  const sortedOffers = [...filteredOffers];
-
-  switch (currentSort) {
-    case SortType.PriceLowToHigh:
-      sortedOffers.sort((offerA, offerB) => offerA.price - offerB.price);
-      break;
-    case SortType.PriceHighToLow:
-      sortedOffers.sort((offerA, offerB) => offerB.price - offerA.price);
-      break;
-    case SortType.TopRatedFirst:
-      sortedOffers.sort((offerA, offerB) => offerB.rating - offerA.rating);
-      break;
-    case SortType.Popular:
-    default:
-      break;
-  }
-
+  const filteredOffers = getOffersByCity(offers, currentCity);
+  const sortedOffers = sortOffers(filteredOffers, currentSort);
   const isEmpty = sortedOffers.length === 0;
 
   return (
@@ -73,7 +59,7 @@ function MainPage(): JSX.Element {
             <>
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{filteredOffers.length} places to stay in {currentCity}</b>
+                <b className="places__found">{sortedOffers.length} places to stay in {currentCity}</b>
 
                 <Sorting
                   currentSort={currentSort}

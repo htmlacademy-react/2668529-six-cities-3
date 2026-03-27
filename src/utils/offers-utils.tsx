@@ -26,13 +26,13 @@ function getFavoriteOffers(offers: Offer[]): Offer[] {
 }
 
 function groupFavoriteOffersByCity(favouriteOffers: Offer[]): Record<string, Offer[]> {
-  return favouriteOffers.reduce<Record<string, Offer[]>>((acc, offer) => {
+  return favouriteOffers.reduce<Record<string, Offer[]>>((groupedOffers, offer) => {
     const cityName = offer.city.name;
-    if (!acc[cityName]) {
-      acc[cityName] = [];
+    if (!groupedOffers[cityName]) {
+      groupedOffers[cityName] = [];
     }
-    acc[cityName].push(offer);
-    return acc;
+    groupedOffers[cityName].push(offer);
+    return groupedOffers;
   }, {});
 }
 

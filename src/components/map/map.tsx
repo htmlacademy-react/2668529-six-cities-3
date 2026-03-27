@@ -47,12 +47,6 @@ function Map({ offers, activeOfferId, mapClassName, city, isScrollZoom }: MapPro
       })
       .addTo(map);
 
-    if (isScrollZoom) {
-      map.scrollWheelZoom.enable();
-    } else {
-      map.scrollWheelZoom.disable();
-    }
-
     mapInstance.current = map;
     markersLayer.current = leaflet.layerGroup().addTo(map);
   }, []);
@@ -67,6 +61,18 @@ function Map({ offers, activeOfferId, mapClassName, city, isScrollZoom }: MapPro
       city.location.zoom
     );
   }, [city]);
+
+  useEffect(() => {
+    if (!mapInstance.current) {
+      return;
+    }
+
+    if (isScrollZoom) {
+      mapInstance.current.scrollWheelZoom.enable();
+    } else {
+      mapInstance.current.scrollWheelZoom.disable();
+    }
+  }, [isScrollZoom]);
 
   useEffect(() => {
     if (!markersLayer.current) {

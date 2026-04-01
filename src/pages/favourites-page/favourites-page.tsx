@@ -1,12 +1,11 @@
+import {useSelector} from 'react-redux';
 import OffersList from '../../components/offers-list/offers-list';
-import {Offer} from '../../types/offer';
+import {State} from '../../store';
 import {getFavoriteOffers, groupFavoriteOffersByCity} from '../../utils/offers-utils';
 
-type FavoritesPageProps = {
-  offers: Offer[];
-};
+function FavoritesPage(): JSX.Element {
+  const offers = useSelector((state: State) => state.offers);
 
-function FavoritesPage({offers}: FavoritesPageProps): JSX.Element {
   const favoriteOffers = getFavoriteOffers(offers);
   const isEmpty = favoriteOffers.length === 0;
   const favoriteOffersByCity = groupFavoriteOffersByCity(favoriteOffers);

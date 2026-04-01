@@ -1,5 +1,6 @@
+import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
-import {FullOffer} from '../../types/offer';
+import {State} from '../../store';
 import NotFoundPage from '../not-found-page/not-found-page';
 import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
@@ -8,12 +9,12 @@ import {reviews} from '../../mocks/reviews';
 import {AuthorizationStatus} from '../../const';
 
 type OfferPageProps = {
-  offers: FullOffer[];
   authorizationStatus: AuthorizationStatus;
 };
 
-function OfferPage({offers, authorizationStatus}: OfferPageProps): JSX.Element {
+function OfferPage({authorizationStatus}: OfferPageProps): JSX.Element {
   const {id} = useParams();
+  const offers = useSelector((state: State) => state.offers);
   const currentOffer = offers.find((item) => item.id === Number(id));
 
   if (!currentOffer) {

@@ -1,7 +1,7 @@
+import { AxiosInstance } from 'axios';
 import { AppDispatch, State } from './index';
 import { fillOffers, setOffersLoadingStatus } from './action';
 import { Offer } from '../types/offer';
-import { AxiosInstance } from 'axios';
 
 type ThunkActionResult = (
   dispatch: AppDispatch,

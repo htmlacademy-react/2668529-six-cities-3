@@ -1,12 +1,14 @@
-import {useSelector} from 'react-redux';
+import {useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import {useParams} from 'react-router-dom';
-import {State} from '../../store';
+import {State, AppDispatch} from '../../store';
 import NotFoundPage from '../not-found-page/not-found-page';
 import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import {reviews} from '../../mocks/reviews';
 import {AuthorizationStatus} from '../../const';
+import {fetchCurrentOfferAction} from '../../store/api-actions';
 
 type OfferPageProps = {
   authorizationStatus: AuthorizationStatus;
@@ -14,8 +16,15 @@ type OfferPageProps = {
 
 function OfferPage({authorizationStatus}: OfferPageProps): JSX.Element {
   const {id} = useParams();
+  const dispatch = useDispatch<AppDispatch>();
   const offers = useSelector((state: State) => state.offers);
-  const currentOffer = offers.find((item) => item.id === Number(id));
+  const currentOffer = useSelector((state: State) => state.currentOffer);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchCurrentOfferAction(id));
+    }
+  }, [dispatch, id]);
 
   if (!currentOffer) {
     return <NotFoundPage />;

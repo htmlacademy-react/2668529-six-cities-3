@@ -1,5 +1,5 @@
-import { SortType } from '../const';
-import { Offer } from '../types/offer';
+import {SortType} from '../const';
+import {Offer} from '../types/offer';
 
 function getOffersByCity(offers: Offer[], city: string): Offer[] {
   return offers.filter((offer) => offer.city.name === city);

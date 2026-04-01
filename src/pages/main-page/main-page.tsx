@@ -8,6 +8,7 @@ import {CITIES, SortType} from '../../const';
 import {State, AppDispatch} from '../../store';
 import {changeCity} from '../../store/action';
 import {getOffersByCity, sortOffers} from '../../utils/offers-utils';
+import Spinner from '../../components/spinner/spinner';
 
 function MainPage(): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<number | null>(null);
@@ -15,6 +16,11 @@ function MainPage(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const currentCity = useSelector((state: State) => state.city);
   const offers = useSelector((state: State) => state.offers);
+  const isOffersLoading = useSelector((state: State) => state.isOffersLoading);
+
+  if (isOffersLoading) {
+    return <Spinner />;
+  }
 
   const handleCityChange = (city: string) => {
     dispatch(changeCity(city));

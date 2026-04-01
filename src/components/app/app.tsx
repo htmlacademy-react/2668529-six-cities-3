@@ -11,7 +11,7 @@ import {AuthorizationStatus, AppRoute} from '../../const';
 import {AppDispatch} from '../../store';
 import {useDispatch} from 'react-redux';
 import {useEffect} from 'react';
-import { fetchOffersAction } from '../../store/api-actions';
+import {fetchOffersAction} from '../../store/api-actions';
 
 type AppProps = {
   authorizationStatus: AuthorizationStatus;

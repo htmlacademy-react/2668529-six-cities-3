@@ -10,4 +10,4 @@ function createAPI(): AxiosInstance {
   });
 }
 
-export { createAPI };
+export {createAPI};

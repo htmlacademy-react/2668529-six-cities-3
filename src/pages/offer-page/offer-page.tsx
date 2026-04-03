@@ -13,7 +13,6 @@ import Spinner from '../../components/spinner/spinner';
 function OfferPage(): JSX.Element {
   const {id} = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const authorizationStatus = useSelector((state: State) => state.authorizationStatus);
   const offers = useSelector((state: State) => state.offers);
   const currentOffer = useSelector((state: State) => state.currentOffer);
   const isCurrentOfferLoading = useSelector((state: State) => state.isCurrentOfferLoading);
@@ -151,10 +150,7 @@ function OfferPage(): JSX.Element {
               </div>
             </div>
 
-            <ReviewsList
-              reviews={reviews}
-              authorizationStatus={authorizationStatus}
-            />
+            <ReviewsList reviews={reviews} />
           </div>
         </div>
 

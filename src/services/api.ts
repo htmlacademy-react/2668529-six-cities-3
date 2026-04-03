@@ -1,5 +1,5 @@
 import axios, {AxiosInstance, InternalAxiosRequestConfig} from 'axios';
-import {getToken} from './token';
+import {getToken} from './token.ts';
 
 const REQUEST_TIMEOUT = 5000;
 const BASE_URL = 'https://15.design.htmlacademy.pro/six-cities';
@@ -12,7 +12,6 @@ function createAPI(): AxiosInstance {
 
   api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     const token = getToken();
-
     if (token) {
       config.headers['X-Token'] = token;
     }

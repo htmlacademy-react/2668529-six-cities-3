@@ -4,7 +4,7 @@ import {fillOffers, setOffersLoadingStatus, fillCurrentOffer,
   setCurrentOfferLoadingStatus, requireAuthorization} from './action';
 import {Offer, FullOffer} from '../types/offer';
 import {AuthorizationStatus} from '../const';
-import {saveToken, dropToken} from '../token.ts';
+import {saveToken, dropToken} from '../services/token.ts';
 
 type ThunkActionResult = (
   dispatch: AppDispatch,

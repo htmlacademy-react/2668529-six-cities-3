@@ -2,7 +2,7 @@ import {Navigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import {State} from '../../store';
-import Spinner from "../spinner/spinner.tsx";
+import Spinner from '../spinner/spinner';
 
 type PrivateRouteProps = {
   isReverse?: boolean;

@@ -1,24 +1,28 @@
+import {useSelector} from 'react-redux';
 import ReviewItem from '../review-item/review-item';
 import ReviewForm from '../../components/review-form/review-form';
-import {Review} from '../../types/review';
+import {Review} from '../../types/review.ts';
 import {AuthorizationStatus} from '../../const';
+import {State} from '../../store';
+import {sortReviews} from '../../utils/reviews-utils';
 
 type ReviewsListProps = {
   reviews: Review[];
-  authorizationStatus: AuthorizationStatus;
 };
 
-function ReviewsList({reviews, authorizationStatus}: ReviewsListProps): JSX.Element {
+function ReviewsList({reviews}: ReviewsListProps): JSX.Element {
+  const authorizationStatus = useSelector((state: State) => state.authorizationStatus);
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
+  const sortedReviews = sortReviews(reviews);
 
   return (
     <section className="offer__reviews reviews">
       <h2 className="reviews__title">
-        Reviews &middot; <span className="reviews__amount">{reviews.length}</span>
+        Reviews &middot; <span className="reviews__amount">{sortedReviews.length}</span>
       </h2>
 
       <ul className="reviews__list">
-        {reviews.map((review) => (
+        {sortedReviews.map((review) => (
           <ReviewItem
             key={review.id}
             review={review}

@@ -1,13 +1,9 @@
 import {Outlet, useLocation} from 'react-router-dom';
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import {AuthorizationStatus, AppRoute} from '../../const';
+import {AppRoute} from '../../const';
 
-type LayoutProps = {
-  authorizationStatus: AuthorizationStatus;
-};
-
-function Layout({authorizationStatus}: LayoutProps): JSX.Element {
+function Layout(): JSX.Element {
   const {pathname} = useLocation();
 
   const isLoginPage = pathname === AppRoute.Login.toString();
@@ -26,10 +22,7 @@ function Layout({authorizationStatus}: LayoutProps): JSX.Element {
 
   return (
     <div className={pageClassName}>
-      <Header
-        authorizationStatus={authorizationStatus}
-        isLoginPage={isLoginPage}
-      />
+      <Header isLoginPage={isLoginPage} />
       <Outlet />
       {isFavoritesPage && <Footer />}
     </div>

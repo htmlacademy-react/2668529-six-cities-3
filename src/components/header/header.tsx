@@ -1,13 +1,26 @@
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '../../store';
+import {logoutAction} from '../../store/api-actions';
+import {useNavigate} from 'react-router-dom';
 import {Link} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 import {AppRoute, AuthorizationStatus} from '../../const';
+import {State} from '../../store';
 
 type HeaderProps = {
-  authorizationStatus: AuthorizationStatus;
   isLoginPage?: boolean;
 };
 
-function Header({authorizationStatus, isLoginPage = false}: HeaderProps): JSX.Element {
+function Header({isLoginPage = false}: HeaderProps): JSX.Element {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const authorizationStatus = useSelector((state: State) => state.authorizationStatus);
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
+
+  const handleSignOut = async () => {
+    await dispatch(logoutAction());
+    navigate(AppRoute.Login);
+  };
 
   return (
     <header className="header">
@@ -42,9 +55,16 @@ function Header({authorizationStatus, isLoginPage = false}: HeaderProps): JSX.El
                     </li>
 
                     <li className="header__nav-item">
-                      <Link className="header__nav-link" to={AppRoute.Root}>
+                      <button
+                        className="header__nav-link"
+                        onClick={(evt) => {
+                          evt.preventDefault();
+                          void handleSignOut();
+                        }}
+                        style={{background: 'none', border: 'none', padding: 0, cursor: 'pointer'}}
+                      >
                         <span className="header__signout">Sign out</span>
-                      </Link>
+                      </button>
                     </li>
                   </>
                 ) : (

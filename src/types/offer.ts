@@ -34,6 +34,7 @@ type FullOffer = BaseOffer & {
   };
   bedrooms: number;
   maxAdults: number;
+  description: string;
 };
 
 export type { Offer, FullOffer };

@@ -7,15 +7,10 @@ import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import {reviews} from '../../mocks/reviews';
-import {AuthorizationStatus} from '../../const';
 import {fetchCurrentOfferAction} from '../../store/api-actions';
 import Spinner from '../../components/spinner/spinner';
 
-type OfferPageProps = {
-  authorizationStatus: AuthorizationStatus;
-};
-
-function OfferPage({authorizationStatus}: OfferPageProps): JSX.Element {
+function OfferPage(): JSX.Element {
   const {id} = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const offers = useSelector((state: State) => state.offers);
@@ -50,7 +45,7 @@ function OfferPage({authorizationStatus}: OfferPageProps): JSX.Element {
       <section className="offer">
         <div className="offer__gallery-container container">
           <div className="offer__gallery">
-            {currentOffer.images.map((image) => (
+            {currentOffer.images.slice(0, 6).map((image) => (
               <div className="offer__image-wrapper" key={image}>
                 <img className="offer__image" src={image} alt={currentOffer.title}/>
               </div>
@@ -150,21 +145,12 @@ function OfferPage({authorizationStatus}: OfferPageProps): JSX.Element {
 
               <div className="offer__description">
                 <p className="offer__text">
-                  A quiet cozy and picturesque that hides behind a river by the
-                  unique lightness of Amsterdam.
-                </p>
-
-                <p className="offer__text">
-                  An independent house strategically located between Rembrand
-                  Square and National Opera.
+                  {currentOffer.description}
                 </p>
               </div>
             </div>
 
-            <ReviewsList
-              reviews={reviews}
-              authorizationStatus={authorizationStatus}
-            />
+            <ReviewsList reviews={reviews} />
           </div>
         </div>
 

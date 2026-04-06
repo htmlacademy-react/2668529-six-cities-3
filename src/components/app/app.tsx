@@ -7,19 +7,16 @@ import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout.tsx';
 import ScrollToTop from '../../components/scroll-to-top/scroll-to-top';
-import {AuthorizationStatus, AppRoute} from '../../const';
+import {AppRoute} from '../../const';
 import {AppDispatch} from '../../store';
 import {useDispatch} from 'react-redux';
 import {useEffect} from 'react';
-import {fetchOffersAction} from '../../store/api-actions';
+import {fetchOffersAction, checkAuthAction} from '../../store/api-actions';
 
-type AppProps = {
-  authorizationStatus: AuthorizationStatus;
-};
-
-function App({authorizationStatus}: AppProps): JSX.Element {
+function App(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
+    dispatch(checkAuthAction());
     dispatch(fetchOffersAction());
   }, [dispatch]);
 
@@ -29,7 +26,7 @@ function App({authorizationStatus}: AppProps): JSX.Element {
       <Routes>
         <Route
           path={AppRoute.Root}
-          element={<Layout authorizationStatus={authorizationStatus}/>}
+          element={<Layout/>}
         >
           <Route
             index
@@ -38,7 +35,7 @@ function App({authorizationStatus}: AppProps): JSX.Element {
           <Route
             path={AppRoute.Login}
             element={(
-              <PrivateRoute authorizationStatus={authorizationStatus} isReverse>
+              <PrivateRoute isReverse>
                 <LoginPage/>
               </PrivateRoute>
             )}
@@ -46,13 +43,13 @@ function App({authorizationStatus}: AppProps): JSX.Element {
           <Route
             path={AppRoute.Offer}
             element={(
-              <OfferPage authorizationStatus={authorizationStatus}/>
+              <OfferPage/>
             )}
           />
           <Route
             path={AppRoute.Favorites}
             element={(
-              <PrivateRoute authorizationStatus={authorizationStatus}>
+              <PrivateRoute>
                 <FavoritesPage/>
               </PrivateRoute>
             )}

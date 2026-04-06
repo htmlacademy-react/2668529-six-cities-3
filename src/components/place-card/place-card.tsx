@@ -5,12 +5,12 @@ import {Offer} from '../../types/offer';
 type PlaceCardProps = {
   offer: Offer;
   cardClassName: string;
-  handleHover?: (offerId: number | null) => void;
+  handleHover?: (offerId: string | null) => void;
 };
 
 function PlaceCard({offer, cardClassName, handleHover}: PlaceCardProps): JSX.Element {
   const {id, title, type, price, previewImage, isPremium, isFavorite, rating} = offer;
-  const offerPath = generatePath(AppRoute.Offer, {id: String(id)});
+  const offerPath = generatePath(AppRoute.Offer, {id: id});
   const imageWidth = cardClassName === 'favorites' ? 150 : 260;
   const imageHeight = cardClassName === 'favorites' ? 110 : 200;
 

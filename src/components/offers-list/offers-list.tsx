@@ -4,7 +4,7 @@ import {Offer} from '../../types/offer';
 type OffersListProps = {
   offers: Offer[];
   cardClassName: string;
-  handleHover?: (offerId: number | null) => void;
+  handleHover?: (offerId: string | null) => void;
 };
 
 function OffersList({offers, cardClassName, handleHover}: OffersListProps): JSX.Element {

@@ -11,7 +11,7 @@ import {getOffersByCity, sortOffers} from '../../utils/offers-utils';
 import Spinner from '../../components/spinner/spinner';
 
 function MainPage(): JSX.Element {
-  const [activeOfferId, setActiveOfferId] = useState<number | null>(null);
+  const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
   const [currentSort, setCurrentSort] = useState<SortType>(SortType.Popular);
   const dispatch = useDispatch<AppDispatch>();
   const currentCity = useSelector((state: State) => state.city);

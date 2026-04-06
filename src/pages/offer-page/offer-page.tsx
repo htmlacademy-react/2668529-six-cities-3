@@ -6,20 +6,22 @@ import NotFoundPage from '../not-found-page/not-found-page';
 import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import ReviewsList from '../../components/reviews-list/reviews-list';
-import {reviews} from '../../mocks/reviews';
-import {fetchCurrentOfferAction} from '../../store/api-actions';
+import {fetchCurrentOfferAction, fetchNearbyOffersAction, fetchReviewsAction} from '../../store/api-actions';
 import Spinner from '../../components/spinner/spinner';
 
 function OfferPage(): JSX.Element {
   const {id} = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const offers = useSelector((state: State) => state.offers);
   const currentOffer = useSelector((state: State) => state.currentOffer);
   const isCurrentOfferLoading = useSelector((state: State) => state.isCurrentOfferLoading);
+  const nearbyOffers = useSelector((state: State) => state.nearbyOffers);
+  const reviews = useSelector((state: State) => state.reviews);
 
   useEffect(() => {
     if (id) {
       dispatch(fetchCurrentOfferAction(id));
+      dispatch(fetchNearbyOffersAction(id));
+      dispatch(fetchReviewsAction(id));
     }
   }, [dispatch, id]);
 
@@ -30,13 +32,6 @@ function OfferPage(): JSX.Element {
   if (!currentOffer) {
     return <NotFoundPage />;
   }
-
-  const nearbyOffers = offers
-    .filter((offer) =>
-      offer.city.name === currentOffer.city.name &&
-      offer.id !== currentOffer.id
-    )
-    .slice(0, 3);
 
   const mapOffers = [currentOffer, ...nearbyOffers];
 
@@ -150,7 +145,10 @@ function OfferPage(): JSX.Element {
               </div>
             </div>
 
-            <ReviewsList reviews={reviews} />
+            <ReviewsList
+              reviews={reviews}
+              offerId={currentOffer.id}
+            />
           </div>
         </div>
 

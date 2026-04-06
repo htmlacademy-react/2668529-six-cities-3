@@ -1,13 +1,26 @@
 import {ChangeEvent, FormEvent, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppDispatch, State} from '../../store';
+import {sendReviewAction} from '../../store/api-actions';
 
 const MIN_REVIEW_LENGTH = 50;
 const MAX_REVIEW_LENGTH = 300;
 
-function ReviewForm(): JSX.Element {
+type ReviewFormProps = {
+  offerId: string;
+};
+
+function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
+  const dispatch = useDispatch<AppDispatch>();
+  const isReviewSending = useSelector((state: State) => state.isReviewSending);
   const [review, setReview] = useState('');
   const [rating, setRating] = useState(0);
 
-  const isSubmitDisabled = rating === 0 || review.length < MIN_REVIEW_LENGTH || review.length > MAX_REVIEW_LENGTH;
+  const isSubmitDisabled =
+    rating === 0 ||
+    review.length < MIN_REVIEW_LENGTH ||
+    review.length > MAX_REVIEW_LENGTH ||
+    isReviewSending;
 
   const handleReviewChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
     setReview(evt.target.value);
@@ -17,11 +30,16 @@ function ReviewForm(): JSX.Element {
     setRating(Number(evt.target.value));
   };
 
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+    if (isSubmitDisabled) {
+      return;
+    }
+    await dispatch(sendReviewAction({offerId, comment: review, rating}));
     setReview('');
     setRating(0);
   };
+
 
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit}>
@@ -38,6 +56,7 @@ function ReviewForm(): JSX.Element {
           type="radio"
           checked={rating === 5}
           onChange={handleRatingChange}
+          disabled={isReviewSending}
         />
         <label htmlFor="5-stars" className="reviews__rating-label form__rating-label" title="perfect">
           <svg className="form__star-image" width="37" height="33">
@@ -53,6 +72,7 @@ function ReviewForm(): JSX.Element {
           type="radio"
           checked={rating === 4}
           onChange={handleRatingChange}
+          disabled={isReviewSending}
         />
         <label htmlFor="4-stars" className="reviews__rating-label form__rating-label" title="good">
           <svg className="form__star-image" width="37" height="33">
@@ -68,6 +88,7 @@ function ReviewForm(): JSX.Element {
           type="radio"
           checked={rating === 3}
           onChange={handleRatingChange}
+          disabled={isReviewSending}
         />
         <label htmlFor="3-stars" className="reviews__rating-label form__rating-label" title="not bad">
           <svg className="form__star-image" width="37" height="33">
@@ -83,6 +104,7 @@ function ReviewForm(): JSX.Element {
           type="radio"
           checked={rating === 2}
           onChange={handleRatingChange}
+          disabled={isReviewSending}
         />
         <label htmlFor="2-stars" className="reviews__rating-label form__rating-label" title="badly">
           <svg className="form__star-image" width="37" height="33">
@@ -98,6 +120,7 @@ function ReviewForm(): JSX.Element {
           type="radio"
           checked={rating === 1}
           onChange={handleRatingChange}
+          disabled={isReviewSending}
         />
         <label htmlFor="1-star" className="reviews__rating-label form__rating-label" title="terribly">
           <svg className="form__star-image" width="37" height="33">
@@ -113,6 +136,7 @@ function ReviewForm(): JSX.Element {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={review}
         onChange={handleReviewChange}
+        disabled={isReviewSending}
       />
 
       <div className="reviews__button-wrapper">
@@ -128,7 +152,7 @@ function ReviewForm(): JSX.Element {
           type="submit"
           disabled={isSubmitDisabled}
         >
-          Submit
+          {isReviewSending ? 'Sending...' : 'Submit'}
         </button>
       </div>
     </form>

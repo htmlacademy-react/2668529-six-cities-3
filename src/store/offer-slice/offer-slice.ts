@@ -3,27 +3,26 @@ import {FullOffer, Offer} from '../../types/offer';
 import {Review} from '../../types/review';
 import {AxiosInstance} from 'axios';
 import {RootState} from '../index';
+import {RequestStatus} from '../../const';
 
 type OfferState = {
   currentOffer: FullOffer | null;
   nearbyOffers: Offer[];
   reviews: Review[];
-  isCurrentOfferLoading: boolean;
-  isNearbyOffersLoading: boolean;
-  isReviewsLoading: boolean;
-  isReviewSending: boolean;
-  hasError: boolean;
+  offerRequestStatus: RequestStatus;
+  nearbyRequestStatus: RequestStatus;
+  reviewsRequestStatus: RequestStatus;
+  reviewSendingRequestStatus: RequestStatus;
 };
 
 const initialState: OfferState = {
   currentOffer: null,
   nearbyOffers: [],
   reviews: [],
-  isCurrentOfferLoading: false,
-  isNearbyOffersLoading: false,
-  isReviewsLoading: false,
-  isReviewSending: false,
-  hasError: false,
+  offerRequestStatus: RequestStatus.Idle,
+  nearbyRequestStatus: RequestStatus.Idle,
+  reviewsRequestStatus: RequestStatus.Idle,
+  reviewSendingRequestStatus: RequestStatus.Idle,
 };
 
 type ReviewData = {
@@ -87,45 +86,44 @@ const offerSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchCurrentOffer.pending, (state) => {
-        state.isCurrentOfferLoading = true;
+        state.offerRequestStatus = RequestStatus.Loading;
         state.currentOffer = null;
       })
       .addCase(fetchCurrentOffer.fulfilled, (state, action) => {
         state.currentOffer = action.payload;
-        state.isCurrentOfferLoading = false;
+        state.offerRequestStatus = RequestStatus.Success;
       })
       .addCase(fetchCurrentOffer.rejected, (state) => {
-        state.isCurrentOfferLoading = false;
-        state.hasError = true;
+        state.offerRequestStatus = RequestStatus.Failed;
       })
       .addCase(fetchNearbyOffers.pending, (state) => {
-        state.isNearbyOffersLoading = true;
+        state.nearbyRequestStatus = RequestStatus.Loading;
       })
       .addCase(fetchNearbyOffers.fulfilled, (state, action) => {
         state.nearbyOffers = action.payload;
-        state.isNearbyOffersLoading = false;
+        state.nearbyRequestStatus = RequestStatus.Success;
       })
       .addCase(fetchNearbyOffers.rejected, (state) => {
-        state.isNearbyOffersLoading = false;
+        state.nearbyRequestStatus = RequestStatus.Failed;
       })
       .addCase(fetchReviews.pending, (state) => {
-        state.isReviewsLoading = true;
+        state.reviewsRequestStatus = RequestStatus.Loading;
       })
       .addCase(fetchReviews.fulfilled, (state, action) => {
         state.reviews = action.payload;
-        state.isReviewsLoading = false;
+        state.reviewsRequestStatus = RequestStatus.Success;
       })
       .addCase(fetchReviews.rejected, (state) => {
-        state.isReviewsLoading = false;
+        state.reviewsRequestStatus = RequestStatus.Failed;
       })
       .addCase(sendReview.pending, (state) => {
-        state.isReviewSending = true;
+        state.reviewSendingRequestStatus = RequestStatus.Loading;
       })
       .addCase(sendReview.fulfilled, (state) => {
-        state.isReviewSending = false;
+        state.reviewSendingRequestStatus = RequestStatus.Success;
       })
       .addCase(sendReview.rejected, (state) => {
-        state.isReviewSending = false;
+        state.reviewSendingRequestStatus = RequestStatus.Failed;
       });
   }
 });

@@ -1,14 +1,11 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {AxiosInstance} from 'axios';
-import {AuthorizationStatus} from '../../const';
+import {AuthorizationStatus, RequestStatus} from '../../const';
 import {saveToken, dropToken} from '../../services/token';
 
 type UserState = {
   authorizationStatus: AuthorizationStatus;
-};
-
-const initialState: UserState = {
-  authorizationStatus: AuthorizationStatus.Unknown,
+  authRequestStatus: RequestStatus;
 };
 
 type AuthData = {
@@ -22,6 +19,11 @@ type AuthInfo = {
   avatarUrl: string;
   isPro: boolean;
   name: string;
+};
+
+const initialState: UserState = {
+  authorizationStatus: AuthorizationStatus.Unknown,
+  authRequestStatus: RequestStatus.Idle,
 };
 
 export const checkAuth = createAsyncThunk<
@@ -65,20 +67,37 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(checkAuth.pending, (state) => {
+        state.authRequestStatus = RequestStatus.Loading;
+      })
       .addCase(checkAuth.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
+        state.authRequestStatus = RequestStatus.Success;
       })
       .addCase(checkAuth.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
+        state.authRequestStatus = RequestStatus.Failed;
+      })
+      .addCase(login.pending, (state) => {
+        state.authRequestStatus = RequestStatus.Loading;
       })
       .addCase(login.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
+        state.authRequestStatus = RequestStatus.Success;
       })
       .addCase(login.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
+        state.authRequestStatus = RequestStatus.Failed;
+      })
+      .addCase(logout.pending, (state) => {
+        state.authRequestStatus = RequestStatus.Loading;
       })
       .addCase(logout.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
+        state.authRequestStatus = RequestStatus.Success;
+      })
+      .addCase(logout.rejected, (state) => {
+        state.authRequestStatus = RequestStatus.Failed;
       });
   }
 });

@@ -2,17 +2,18 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {AxiosInstance} from 'axios';
 import {Offer} from '../../types/offer';
 import {RootState} from '../index';
+import {RequestStatus} from '../../const';
 
 type OffersState = {
   offers: Offer[];
   currentCity: string;
-  isOffersLoading: boolean;
+  offersRequestStatus: RequestStatus;
 };
 
 const initialState: OffersState = {
   offers: [],
   currentCity: 'Paris',
-  isOffersLoading: false,
+  offersRequestStatus: RequestStatus.Idle,
 };
 
 export const fetchOffers = createAsyncThunk<
@@ -38,14 +39,14 @@ const offersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchOffers.pending, (state) => {
-        state.isOffersLoading = true;
+        state.offersRequestStatus = RequestStatus.Loading;
       })
       .addCase(fetchOffers.fulfilled, (state, action) => {
         state.offers = action.payload;
-        state.isOffersLoading = false;
+        state.offersRequestStatus = RequestStatus.Success;
       })
       .addCase(fetchOffers.rejected, (state) => {
-        state.isOffersLoading = false;
+        state.offersRequestStatus = RequestStatus.Failed;
       });
   }
 });

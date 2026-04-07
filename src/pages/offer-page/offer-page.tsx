@@ -8,6 +8,7 @@ import ReviewsList from '../../components/reviews-list/reviews-list';
 import Spinner from '../../components/spinner/spinner';
 import {fetchCurrentOffer, fetchNearbyOffers, fetchReviews} from '../../store/offer-slice/offer-slice';
 import {RootState, AppDispatch} from '../../store';
+import {RequestStatus} from '../../const';
 
 function OfferPage(): JSX.Element {
   const {id} = useParams<{id: string}>();
@@ -15,8 +16,7 @@ function OfferPage(): JSX.Element {
   const currentOffer = useSelector((state: RootState) => state.OFFER.currentOffer);
   const nearbyOffers = useSelector((state: RootState) => state.OFFER.nearbyOffers);
   const reviews = useSelector((state: RootState) => state.OFFER.reviews);
-  const isCurrentOfferLoading = useSelector((state: RootState) => state.OFFER.isCurrentOfferLoading);
-  const hasError = useSelector((state: RootState) => state.OFFER.hasError);
+  const offerRequestStatus = useSelector((state: RootState) => state.OFFER.offerRequestStatus);
 
   useEffect(() => {
     if (id) {
@@ -26,15 +26,16 @@ function OfferPage(): JSX.Element {
     }
   }, [dispatch, id]);
 
-  if (isCurrentOfferLoading) {
+  if (offerRequestStatus === RequestStatus.Loading) {
     return <Spinner />;
   }
 
-  if (hasError || !currentOffer) {
+  if (!currentOffer || offerRequestStatus === RequestStatus.Failed) {
     return <NotFoundPage />;
   }
 
-  const mapOffers = [currentOffer, ...nearbyOffers];
+  const firstThreeNearbyOffers = nearbyOffers.slice(0, 3);
+  const mapOffers = [currentOffer, ...firstThreeNearbyOffers];
 
   return (
     <main className="page__main page__main--offer">
@@ -162,14 +163,14 @@ function OfferPage(): JSX.Element {
         />
       </section>
 
-      {nearbyOffers.length > 0 && (
+      {firstThreeNearbyOffers.length > 0 && (
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
 
             <div className="near-places__list places__list">
               <OffersList
-                offers={nearbyOffers}
+                offers={firstThreeNearbyOffers}
                 cardClassName="near-places"
               />
             </div>

@@ -28,6 +28,13 @@ enum SortType {
   TopRatedFirst = 'Top rated first',
 }
 
+enum RequestStatus {
+  Idle = 'IDLE',
+  Loading = 'LOADING',
+  Success = 'SUCCESS',
+  Failed = 'FAILED',
+}
+
 const SORT_OPTIONS = [
   SortType.Popular,
   SortType.PriceLowToHigh,
@@ -35,4 +42,4 @@ const SORT_OPTIONS = [
   SortType.TopRatedFirst,
 ];
 
-export {AuthorizationStatus, AppRoute, CITIES, SortType, SORT_OPTIONS};
+export {AuthorizationStatus, AppRoute, CITIES, SortType, SORT_OPTIONS, RequestStatus};

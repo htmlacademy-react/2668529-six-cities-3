@@ -15,6 +15,12 @@ type OfferState = {
   reviewSendingRequestStatus: RequestStatus;
 };
 
+type ReviewData = {
+  offerId: string;
+  comment: string;
+  rating: number;
+};
+
 const initialState: OfferState = {
   currentOffer: null,
   nearbyOffers: [],
@@ -23,12 +29,6 @@ const initialState: OfferState = {
   nearbyRequestStatus: RequestStatus.Idle,
   reviewsRequestStatus: RequestStatus.Idle,
   reviewSendingRequestStatus: RequestStatus.Idle,
-};
-
-type ReviewData = {
-  offerId: string;
-  comment: string;
-  rating: number;
 };
 
 export const fetchCurrentOffer = createAsyncThunk<

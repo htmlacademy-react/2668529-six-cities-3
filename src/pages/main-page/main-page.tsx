@@ -19,10 +19,6 @@ function MainPage(): JSX.Element {
   const offers = useSelector((state: RootState) => state.OFFERS.offers);
   const offersRequestStatus = useSelector((state: RootState) => state.OFFERS.offersRequestStatus);
 
-  if (offersRequestStatus === RequestStatus.Loading) {
-    return <Spinner />;
-  }
-
   const handleCityChange = useCallback((city: string) => {
     dispatch(changeCity(city));
     setCurrentSort(SortType.Popular);
@@ -33,6 +29,10 @@ function MainPage(): JSX.Element {
   const sortedOffers = useMemo(() => sortOffers(filteredOffers, currentSort), [filteredOffers, currentSort]);
   const isEmpty = sortedOffers.length === 0;
   const placesToStayText = sortedOffers.length === 1 ? 'place' : 'places';
+
+  if (offersRequestStatus === RequestStatus.Loading) {
+    return <Spinner />;
+  }
 
   if (isEmpty) {
     return (

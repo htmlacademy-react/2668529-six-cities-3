@@ -1,5 +1,5 @@
-import {useEffect} from 'react';
-import {useParams} from 'react-router-dom';
+import {useEffect, MouseEvent} from 'react';
+import {useParams, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import NotFoundPage from '../not-found-page/not-found-page';
 import OffersList from '../../components/offers-list/offers-list';
@@ -7,16 +7,19 @@ import Map from '../../components/map/map';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import Spinner from '../../components/spinner/spinner';
 import {fetchCurrentOffer, fetchNearbyOffers, fetchReviews} from '../../store/offer-slice/offer-slice';
+import {changeFavoriteStatus} from '../../store/offers-slice/offers-slice';
 import {RootState, AppDispatch} from '../../store';
-import {RequestStatus} from '../../const';
+import {RequestStatus, AuthorizationStatus, AppRoute} from '../../const';
 
 function OfferPage(): JSX.Element {
   const {id} = useParams<{id: string}>();
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const currentOffer = useSelector((state: RootState) => state.OFFER.currentOffer);
   const nearbyOffers = useSelector((state: RootState) => state.OFFER.nearbyOffers);
   const reviews = useSelector((state: RootState) => state.OFFER.reviews);
   const offerRequestStatus = useSelector((state: RootState) => state.OFFER.offerRequestStatus);
+  const authorizationStatus = useSelector((state: RootState) => state.USER.authorizationStatus);
 
   useEffect(() => {
     if (id) {
@@ -36,6 +39,25 @@ function OfferPage(): JSX.Element {
 
   const firstThreeNearbyOffers = nearbyOffers.slice(0, 3);
   const mapOffers = [currentOffer, ...firstThreeNearbyOffers];
+
+  const handleBookmarkClick = async (evt: MouseEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      navigate(AppRoute.Login);
+      return;
+    }
+    const nextStatus = currentOffer.isFavorite ? 0 : 1;
+    try {
+      await dispatch(
+        changeFavoriteStatus({
+          offerId: String(currentOffer.id),
+          status: nextStatus,
+        })
+      ).unwrap();
+    } catch (error) {
+      void error;
+    }
+  };
 
   return (
     <main className="page__main page__main--offer">
@@ -66,6 +88,9 @@ function OfferPage(): JSX.Element {
                   currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''
                 }`}
                 type="button"
+                onClick={(evt) => {
+                  void handleBookmarkClick(evt);
+                }}
               >
                 <svg className="offer__bookmark-icon" width="31" height="33">
                   <use xlinkHref="#icon-bookmark"/>

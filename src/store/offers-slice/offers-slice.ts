@@ -9,6 +9,7 @@ type OffersState = {
   currentCity: string;
   offersRequestStatus: RequestStatus;
   favoritesRequestStatus: RequestStatus;
+  favoriteChangingStatus: RequestStatus;
 };
 
 const initialState: OffersState = {
@@ -17,6 +18,7 @@ const initialState: OffersState = {
   currentCity: 'Paris',
   offersRequestStatus: RequestStatus.Idle,
   favoritesRequestStatus: RequestStatus.Idle,
+  favoriteChangingStatus: RequestStatus.Idle,
 };
 
 export const fetchOffers = createAsyncThunk<
@@ -39,6 +41,23 @@ export const fetchFavorites = createAsyncThunk<
   'offers/fetchFavorites',
   async (_arg, {extra: api}) => {
     const {data} = await api.get<Offer[]>('/favorite');
+    return data;
+  }
+);
+
+type ChangeFavoriteStatusData = {
+  offerId: string;
+  status: 1 | 0;
+};
+
+export const changeFavoriteStatus = createAsyncThunk<
+  Offer,
+  ChangeFavoriteStatusData,
+  {extra: AxiosInstance}
+>(
+  'offers/changeFavoriteStatus',
+  async ({offerId, status}, {extra: api}) => {
+    const {data} = await api.post<Offer>(`/favorite/${offerId}/${status}`);
     return data;
   }
 );
@@ -72,6 +91,33 @@ const offersSlice = createSlice({
       })
       .addCase(fetchFavorites.rejected, (state) => {
         state.favoritesRequestStatus = RequestStatus.Failed;
+      })
+      .addCase(changeFavoriteStatus.pending, (state) => {
+        state.favoriteChangingStatus = RequestStatus.Loading;
+      })
+      .addCase(changeFavoriteStatus.fulfilled, (state, action) => {
+        state.favoriteChangingStatus = RequestStatus.Success;
+
+        state.offers = state.offers.map((offer) =>
+          offer.id === action.payload.id ? action.payload : offer
+        );
+
+        if (action.payload.isFavorite) {
+          const isAlreadyInFavorites = state.favorites.some(
+            (offer) => offer.id === action.payload.id
+          );
+
+          if (!isAlreadyInFavorites) {
+            state.favorites.push(action.payload);
+          }
+        } else {
+          state.favorites = state.favorites.filter(
+            (offer) => offer.id !== action.payload.id
+          );
+        }
+      })
+      .addCase(changeFavoriteStatus.rejected, (state) => {
+        state.favoriteChangingStatus = RequestStatus.Failed;
       });
   }
 });

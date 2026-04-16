@@ -1,15 +1,19 @@
 import {FormEvent, useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, Link} from 'react-router-dom';
 import {AppDispatch} from '../../store';
 import {login} from '../../store/user-slice/user-slice';
-import {AppRoute} from '../../const';
+import {AppRoute, CITIES} from '../../const';
+import {changeCity} from '../../store/offers-slice/offers-slice';
 
 function LoginPage(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [randomCity] = useState(
+    () => CITIES[Math.floor(Math.random() * CITIES.length)]
+  );
 
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -19,6 +23,10 @@ function LoginPage(): JSX.Element {
     }
     await dispatch(login({email, password})).unwrap();
     navigate(AppRoute.Root);
+  };
+
+  const handleCityClick = () => {
+    dispatch(changeCity(randomCity));
   };
 
   return (
@@ -67,9 +75,13 @@ function LoginPage(): JSX.Element {
 
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <a className="locations__item-link" href="#todo">
-              <span>Amsterdam</span>
-            </a>
+            <Link
+              className="locations__item-link"
+              to={AppRoute.Root}
+              onClick={handleCityClick}
+            >
+              <span>{randomCity}</span>
+            </Link>
           </div>
         </section>
       </div>

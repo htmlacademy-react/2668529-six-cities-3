@@ -22,6 +22,7 @@ function OfferPage(): JSX.Element {
   const reviews = useSelector((state: RootState) => state.OFFER.reviews);
   const offerRequestStatus = useSelector((state: RootState) => state.OFFER.offerRequestStatus);
   const authorizationStatus = useSelector((state: RootState) => state.USER.authorizationStatus);
+  const isBookmarkActive = authorizationStatus === AuthorizationStatus.Auth && !!currentOffer?.isFavorite;
   const firstThreeNearbyOffers = useMemo(() => nearbyOffers.slice(0, 3), [nearbyOffers]);
   const mapOffers = useMemo<Offer[]>(
     () => (currentOffer ? [currentOffer, ...firstThreeNearbyOffers] : []),
@@ -89,7 +90,7 @@ function OfferPage(): JSX.Element {
 
               <button
                 className={`offer__bookmark-button button ${
-                  currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''
+                  isBookmarkActive ? 'offer__bookmark-button--active' : ''
                 }`}
                 type="button"
                 onClick={(evt) => {
@@ -100,7 +101,7 @@ function OfferPage(): JSX.Element {
                   <use xlinkHref="#icon-bookmark"/>
                 </svg>
                 <span className="visually-hidden">
-                  {currentOffer.isFavorite ? 'In bookmarks' : 'To bookmarks'}
+                  {isBookmarkActive ? 'In bookmarks' : 'To bookmarks'}
                 </span>
               </button>
             </div>

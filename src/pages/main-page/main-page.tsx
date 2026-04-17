@@ -73,11 +73,13 @@ function MainPage(): JSX.Element {
               onSortChange={setCurrentSort}
             />
 
-            <OffersList
-              offers={sortedOffers}
-              cardClassName="cities"
-              handleHover={setActiveOfferId}
-            />
+            <div className="cities__places-list places__list tabs__content">
+              <OffersList
+                offers={sortedOffers}
+                cardClassName="cities"
+                handleHover={setActiveOfferId}
+              />
+            </div>
           </section>
 
           <div className="cities__right-section">

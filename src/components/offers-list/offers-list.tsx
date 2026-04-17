@@ -9,7 +9,7 @@ type OffersListProps = {
 
 function OffersList({offers, cardClassName, handleHover}: OffersListProps): JSX.Element {
   return (
-    <div className={`${cardClassName}__places-list places__list`}>
+    <>
       {offers.map((offer) => (
         <PlaceCard
           key={offer.id}
@@ -18,7 +18,7 @@ function OffersList({offers, cardClassName, handleHover}: OffersListProps): JSX.
           handleHover={handleHover}
         />
       ))}
-    </div>
+    </>
   );
 }
 

@@ -1,6 +1,6 @@
 function FavoritesEmpty(): JSX.Element {
   return (
-    <main className="page__main page__main--favorites page__main--favorites-empty">
+    <main className="page__main page__main--favorites page__main--favorites-empty page--favorites-empty">
       <div className="page__favorites-container container">
         <section className="favorites favorites--empty">
           <h1 className="visually-hidden">Favorites (empty)</h1>

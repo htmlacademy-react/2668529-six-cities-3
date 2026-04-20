@@ -2,7 +2,6 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {FullOffer, Offer} from '../../types/offer';
 import {Review} from '../../types/review';
 import {AxiosInstance} from 'axios';
-import {RootState} from '../index';
 import {RequestStatus} from '../../const';
 import {changeFavoriteStatus} from '../offers-slice/offers-slice';
 
@@ -37,7 +36,7 @@ const initialState: OfferState = {
 export const fetchCurrentOffer = createAsyncThunk<
   FullOffer,
   string,
-  {extra: AxiosInstance; state: RootState}
+  {extra: AxiosInstance}
 >(
   'offer/fetchCurrentOffer',
   async (id, {extra: api}) => {
@@ -71,14 +70,17 @@ export const fetchReviews = createAsyncThunk<
 );
 
 export const sendReview = createAsyncThunk<
-  void,
+  Review,
   ReviewData,
-  {extra: AxiosInstance; state: RootState}
+  {extra: AxiosInstance}
 >(
   'offer/sendReview',
-  async ({offerId, comment, rating}, {extra: api, dispatch}) => {
-    await api.post(`/comments/${offerId}`, {comment, rating});
-    await dispatch(fetchReviews(offerId));
+  async ({offerId, comment, rating}, {extra: api}) => {
+    const {data} = await api.post<Review>(`/comments/${offerId}`, {
+      comment,
+      rating,
+    });
+    return data;
   }
 );
 
@@ -123,9 +125,10 @@ const offerSlice = createSlice({
         state.reviewSendingRequestStatus = RequestStatus.Loading;
         state.reviewSendingRequestError = null;
       })
-      .addCase(sendReview.fulfilled, (state) => {
+      .addCase(sendReview.fulfilled, (state, action) => {
         state.reviewSendingRequestStatus = RequestStatus.Success;
         state.reviewSendingRequestError = null;
+        state.reviews = [action.payload, ...state.reviews];
       })
       .addCase(sendReview.rejected, (state) => {
         state.reviewSendingRequestStatus = RequestStatus.Failed;

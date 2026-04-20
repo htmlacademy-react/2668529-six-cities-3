@@ -130,13 +130,13 @@ function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
           className="form__rating-input visually-hidden"
           name="rating"
           value="1"
-          id="1-star"
+          id="1-stars"
           type="radio"
           checked={rating === 1}
           onChange={handleRatingChange}
           disabled={isReviewSending}
         />
-        <label htmlFor="1-star" className="reviews__rating-label form__rating-label" title="terribly">
+        <label htmlFor="1-stars" className="reviews__rating-label form__rating-label" title="terribly">
           <svg className="form__star-image" width="37" height="33">
             <use xlinkHref="#icon-star" />
           </svg>
@@ -155,24 +155,43 @@ function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
 
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
-          To submit review please make sure to set <span className="reviews__star">rating</span>
-          {' '}
-          and describe your stay with at least
-          {' '}
+          To submit review please make sure to set <span className="reviews__star">rating</span>{' '}
+          and describe your stay with at least{' '}
           <b className="reviews__text-amount">{MIN_REVIEW_LENGTH} characters</b>.
         </p>
-        {reviewSendingRequestError && (
-          <p className="reviews__error" style={{color: 'red', marginBottom: '10px'}}>
-            {reviewSendingRequestError}
-          </p>
-        )}
-        <button
-          className="reviews__submit form__submit button"
-          type="submit"
-          disabled={isSubmitDisabled}
+
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginTop: '10px',
+            gap: '10px'
+          }}
         >
-          {isReviewSending ? 'Sending...' : 'Submit'}
-        </button>
+          {reviewSendingRequestError && (
+            <p
+              style={{
+                color: '#ff4d4f',
+                backgroundColor: 'rgba(255, 77, 79, 0.1)',
+                padding: '6px 10px',
+                borderRadius: '6px',
+                fontSize: '14px',
+                margin: 0
+              }}
+            >
+              {reviewSendingRequestError}
+            </p>
+          )}
+
+          <button
+            className="reviews__submit form__submit button"
+            type="submit"
+            disabled={isSubmitDisabled}
+          >
+            {isReviewSending ? 'Sending...' : 'Submit'}
+          </button>
+        </div>
       </div>
     </form>
   );

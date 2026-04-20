@@ -74,7 +74,7 @@ function PlaceCard({offer, cardClassName, handleHover}: PlaceCardProps): JSX.Ele
         </Link>
       </div>
 
-      <div className="place-card__info">
+      <div className={`${cardClassName}__card-info place-card__info`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>

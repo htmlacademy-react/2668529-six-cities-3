@@ -7,20 +7,29 @@ import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout.tsx';
 import ScrollToTop from '../../components/scroll-to-top/scroll-to-top';
-import {AppRoute} from '../../const';
-import {AppDispatch} from '../../store';
-import {useDispatch} from 'react-redux';
+import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppDispatch, RootState} from '../../store';
+import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import {fetchOffers, fetchFavorites} from '../../store/offers-slice/offers-slice';
 import {checkAuth} from '../../store/user-slice/user-slice';
 
 function App(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
+  const authorizationStatus = useSelector(
+    (state: RootState) => state.USER.authorizationStatus
+  );
+
   useEffect(() => {
-    dispatch(checkAuth());
-    dispatch(fetchOffers());
-    dispatch(fetchFavorites());
+    void dispatch(checkAuth());
+    void dispatch(fetchOffers());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      void dispatch(fetchFavorites());
+    }
+  }, [authorizationStatus, dispatch]);
 
   return (
     <BrowserRouter>

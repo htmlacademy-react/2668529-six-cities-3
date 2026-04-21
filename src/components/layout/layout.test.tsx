@@ -23,6 +23,9 @@ describe('Component test: Layout', () => {
         offersRequestStatus: RequestStatus.Idle,
         favoritesRequestStatus: RequestStatus.Idle,
         favoriteChangingStatus: RequestStatus.Idle,
+        offersError: null,
+        favoritesError: null,
+        favoriteChangeError: null,
       },
       OFFER: {
         currentOffer: null,
@@ -38,6 +41,7 @@ describe('Component test: Layout', () => {
         authorizationStatus: AuthorizationStatus.NoAuth,
         authRequestStatus: RequestStatus.Idle,
         user: null,
+        authError: null,
       },
     },
   });

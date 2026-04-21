@@ -8,20 +8,22 @@ import ReviewsList from '../../components/reviews-list/reviews-list';
 import Spinner from '../../components/spinner/spinner';
 import {fetchCurrentOffer, fetchNearbyOffers, fetchReviews} from '../../store/offer-slice/offer-slice';
 import {changeFavoriteStatus} from '../../store/offers-slice/offers-slice';
-import {RootState, AppDispatch} from '../../store';
+import {AppDispatch} from '../../store';
 import {RequestStatus, AuthorizationStatus, AppRoute} from '../../const';
 import {capitalize} from '../../utils/offers-utils';
 import {Offer} from '../../types/offer';
+import {getCurrentOffer, getNearbyOffers, getReviews, getOfferRequestStatus} from '../../store/offer-slice/selectors';
+import {getAuthorizationStatus} from '../../store/user-slice/selectors';
 
 function OfferPage(): JSX.Element {
   const {id} = useParams<{id: string}>();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const currentOffer = useSelector((state: RootState) => state.OFFER.currentOffer);
-  const nearbyOffers = useSelector((state: RootState) => state.OFFER.nearbyOffers);
-  const reviews = useSelector((state: RootState) => state.OFFER.reviews);
-  const offerRequestStatus = useSelector((state: RootState) => state.OFFER.offerRequestStatus);
-  const authorizationStatus = useSelector((state: RootState) => state.USER.authorizationStatus);
+  const currentOffer = useSelector(getCurrentOffer);
+  const nearbyOffers = useSelector(getNearbyOffers);
+  const reviews = useSelector(getReviews);
+  const offerRequestStatus = useSelector(getOfferRequestStatus);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
   const isBookmarkActive = authorizationStatus === AuthorizationStatus.Auth && !!currentOffer?.isFavorite;
   const firstThreeNearbyOffers = useMemo(() => nearbyOffers.slice(0, 3), [nearbyOffers]);
   const mapOffers = useMemo<Offer[]>(

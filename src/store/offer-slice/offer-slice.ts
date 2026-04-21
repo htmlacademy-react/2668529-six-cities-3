@@ -2,7 +2,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {FullOffer, Offer} from '../../types/offer';
 import {Review} from '../../types/review';
 import {AxiosInstance} from 'axios';
-import {RequestStatus} from '../../const';
+import {APIRoute, RequestStatus} from '../../const';
 import {changeFavoriteStatus} from '../offers-slice/offers-slice';
 
 type OfferState = {
@@ -40,7 +40,7 @@ export const fetchCurrentOffer = createAsyncThunk<
 >(
   'offer/fetchCurrentOffer',
   async (id, {extra: api}) => {
-    const {data} = await api.get<FullOffer>(`/offers/${id}`);
+    const {data} = await api.get<FullOffer>(`${APIRoute.Offers}/${id}`);
     return data;
   }
 );
@@ -52,7 +52,7 @@ export const fetchNearbyOffers = createAsyncThunk<
 >(
   'offer/fetchNearbyOffers',
   async (id, {extra: api}) => {
-    const {data} = await api.get<Offer[]>(`/offers/${id}/nearby`);
+    const {data} = await api.get<Offer[]>(`${APIRoute.Offers}/${id}/nearby`);
     return data;
   }
 );
@@ -64,7 +64,7 @@ export const fetchReviews = createAsyncThunk<
 >(
   'offer/fetchReviews',
   async (id, {extra: api}) => {
-    const {data} = await api.get<Review[]>(`/comments/${id}`);
+    const {data} = await api.get<Review[]>(`${APIRoute.Comments}/${id}`);
     return data;
   }
 );
@@ -76,7 +76,7 @@ export const sendReview = createAsyncThunk<
 >(
   'offer/sendReview',
   async ({offerId, comment, rating}, {extra: api}) => {
-    const {data} = await api.post<Review>(`/comments/${offerId}`, {
+    const {data} = await api.post<Review>(`${APIRoute.Comments}/${offerId}`, {
       comment,
       rating,
     });

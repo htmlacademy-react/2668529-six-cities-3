@@ -1,22 +1,24 @@
 import {MouseEvent} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import {RootState, AppDispatch} from '../../store';
+import {AppDispatch} from '../../store';
 import {groupFavoriteOffersByCity} from '../../utils/offers-utils';
 import FavoritesEmpty from '../../components/favorites-empty/favorites-empty';
 import Spinner from '../../components/spinner/spinner';
 import {AppRoute, AuthorizationStatus, RequestStatus} from '../../const';
 import {changeFavoriteStatus, changeCity} from '../../store/offers-slice/offers-slice';
 import {capitalize} from '../../utils/offers-utils';
+import {getFavorites, getFavoritesRequestStatus, getFavoritesError, getFavoriteChangeError} from '../../store/offers-slice/selectors';
+import {getAuthorizationStatus} from '../../store/user-slice/selectors';
 
 function FavoritesPage(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const favoriteOffers = useSelector((state: RootState) => state.OFFERS.favorites);
-  const favoritesRequestStatus = useSelector((state: RootState) => state.OFFERS.favoritesRequestStatus);
-  const authorizationStatus = useSelector((state: RootState) => state.USER.authorizationStatus);
-  const favoritesError = useSelector((state: RootState) => state.OFFERS.favoritesError);
-  const favoriteChangeError = useSelector((state: RootState) => state.OFFERS.favoriteChangeError);
+  const favoriteOffers = useSelector(getFavorites);
+  const favoritesRequestStatus = useSelector(getFavoritesRequestStatus);
+  const favoritesError = useSelector(getFavoritesError);
+  const favoriteChangeError = useSelector(getFavoriteChangeError);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
 
   const serverErrorMessage = (favoritesError || favoriteChangeError) ? (
     <div

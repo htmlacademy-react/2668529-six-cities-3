@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {AxiosInstance} from 'axios';
 import {Offer} from '../../types/offer';
-import {RequestStatus} from '../../const';
+import {RequestStatus, APIRoute} from '../../const';
 
 type OffersState = {
   offers: Offer[];
@@ -13,6 +13,11 @@ type OffersState = {
   offersError: string | null;
   favoritesError: string | null;
   favoriteChangeError: string | null;
+};
+
+type ChangeFavoriteStatusData = {
+  offerId: string;
+  status: 1 | 0;
 };
 
 const initialState: OffersState = {
@@ -34,7 +39,7 @@ export const fetchOffers = createAsyncThunk<
 >(
   'offers/fetchOffers',
   async (_arg, {extra: api}) => {
-    const {data} = await api.get<Offer[]>('/offers');
+    const {data} = await api.get<Offer[]>(APIRoute.Offers);
     return data;
   }
 );
@@ -46,15 +51,10 @@ export const fetchFavorites = createAsyncThunk<
 >(
   'offers/fetchFavorites',
   async (_arg, {extra: api}) => {
-    const {data} = await api.get<Offer[]>('/favorite');
+    const {data} = await api.get<Offer[]>(APIRoute.Favorites);
     return data;
   }
 );
-
-type ChangeFavoriteStatusData = {
-  offerId: string;
-  status: 1 | 0;
-};
 
 export const changeFavoriteStatus = createAsyncThunk<
   Offer,
@@ -63,7 +63,7 @@ export const changeFavoriteStatus = createAsyncThunk<
 >(
   'offers/changeFavoriteStatus',
   async ({offerId, status}, {extra: api}) => {
-    const {data} = await api.post<Offer>(`/favorite/${offerId}/${status}`);
+    const {data} = await api.post<Offer>(`${APIRoute.Favorites}/${offerId}/${status}`);
     return data;
   }
 );

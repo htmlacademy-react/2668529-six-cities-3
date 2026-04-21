@@ -1,8 +1,10 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../../store';
 import {Link} from 'react-router-dom';
+import {AppDispatch} from '../../store';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import {logout} from '../../store/user-slice/user-slice';
+import {getFavorites} from '../../store/offers-slice/selectors';
+import {getAuthorizationStatus, getUser} from '../../store/user-slice/selectors';
 
 type HeaderProps = {
   isLoginPage?: boolean;
@@ -10,13 +12,18 @@ type HeaderProps = {
 
 function Header({isLoginPage = false}: HeaderProps): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
-  const authorizationStatus = useSelector((state: RootState) => state.USER.authorizationStatus);
-  const user = useSelector((state: RootState) => state.USER.user);
-  const favoriteOffersCount = useSelector((state: RootState) => state.OFFERS.favorites.length);
+  const favoriteOffers = useSelector(getFavorites);
+  const favoriteOffersCount = favoriteOffers.length;
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const user = useSelector(getUser);
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
 
   const handleSignOut = async () => {
-    await dispatch(logout()).unwrap();
+    try {
+      await dispatch(logout()).unwrap();
+    } catch (error) {
+      void error;
+    }
   };
 
   return (
@@ -38,52 +45,49 @@ function Header({isLoginPage = false}: HeaderProps): JSX.Element {
           {!isLoginPage && (
             <nav className="header__nav">
               <ul className="header__nav-list">
+                {isAuth && user && (
+                  <li className="header__nav-item user">
+                    <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
+                      <div className="header__avatar-wrapper user__avatar-wrapper">
+                        <img
+                          className="user__avatar"
+                          src={user.avatarUrl}
+                          alt={user.name}
+                          width="54"
+                          height="54"
+                        />
+                      </div>
+                      <span className="header__user-name user__name">{user.email}</span>
+                      <span className="header__favorite-count">{favoriteOffersCount}</span>
+                    </Link>
+                  </li>
+                )}
 
-                {isAuth && user ? (
-                  <>
-                    <li className="header__nav-item user">
-                      <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
-                        <div className="header__avatar-wrapper user__avatar-wrapper">
-                          <img
-                            className="user__avatar"
-                            src={user.avatarUrl}
-                            alt={user.name}
-                            width="54"
-                            height="54"
-                          />
-                        </div>
-                        <span className="header__user-name user__name">
-                          {user.email}
-                        </span>
-                        <span className="header__favorite-count">{favoriteOffersCount}</span>
-                      </Link>
-                    </li>
+                {isAuth && user && (
+                  <li className="header__nav-item">
+                    <button
+                      className="header__nav-link"
+                      type="button"
+                      onClick={() => {
+                        void handleSignOut();
+                      }}
+                      style={{background: 'none', border: 'none', padding: 0, cursor: 'pointer'}}
+                    >
+                      <span className="header__signout">Sign out</span>
+                    </button>
+                  </li>
+                )}
 
-                    <li className="header__nav-item">
-                      <button
-                        className="header__nav-link"
-                        onClick={(evt) => {
-                          evt.preventDefault();
-                          void handleSignOut();
-                        }}
-                        style={{background: 'none', border: 'none', padding: 0, cursor: 'pointer'}}
-                      >
-                        <span className="header__signout">Sign out</span>
-                      </button>
-                    </li>
-                  </>
-                ) : (
+                {!isAuth && (
                   <li className="header__nav-item user">
                     <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Login}>
                       <span className="header__login">Sign in</span>
                     </Link>
                   </li>
                 )}
-
               </ul>
             </nav>
           )}
-
         </div>
       </div>
     </header>

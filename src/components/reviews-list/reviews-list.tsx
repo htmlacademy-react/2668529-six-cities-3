@@ -3,8 +3,8 @@ import ReviewItem from '../review-item/review-item';
 import ReviewForm from '../../components/review-form/review-form';
 import {Review} from '../../types/review.ts';
 import {AuthorizationStatus} from '../../const';
-import {RootState} from '../../store';
 import {sortReviews} from '../../utils/reviews-utils';
+import {getAuthorizationStatus} from '../../store/user-slice/selectors.ts';
 
 type ReviewsListProps = {
   reviews: Review[];
@@ -12,7 +12,7 @@ type ReviewsListProps = {
 };
 
 function ReviewsList({reviews, offerId}: ReviewsListProps): JSX.Element {
-  const authorizationStatus = useSelector((state: RootState) => state.USER.authorizationStatus);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
   const sortedReviews = sortReviews(reviews);
 

@@ -3,9 +3,10 @@ import {Link, generatePath, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import {Offer} from '../../types/offer';
-import {AppDispatch, RootState} from '../../store';
+import {AppDispatch} from '../../store';
 import {changeFavoriteStatus} from '../../store/offers-slice/offers-slice';
 import {capitalize} from '../../utils/offers-utils';
+import {getAuthorizationStatus} from '../../store/user-slice/selectors.ts';
 
 type PlaceCardProps = {
   offer: Offer;
@@ -16,7 +17,7 @@ type PlaceCardProps = {
 function PlaceCard({offer, cardClassName, handleHover}: PlaceCardProps): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const authorizationStatus = useSelector((state: RootState) => state.USER.authorizationStatus);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
   const {id, title, type, price, previewImage, isPremium, isFavorite, rating} = offer;
   const isBookmarkActive = authorizationStatus === AuthorizationStatus.Auth && isFavorite;
   const offerPath = generatePath(AppRoute.Offer, {id: id});

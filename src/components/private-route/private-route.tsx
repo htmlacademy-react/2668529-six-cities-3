@@ -1,8 +1,8 @@
 import {Navigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import {AppRoute, AuthorizationStatus} from '../../const';
-import {RootState} from '../../store';
 import Spinner from '../spinner/spinner';
+import {getAuthorizationStatus} from '../../store/user-slice/selectors.ts';
 
 type PrivateRouteProps = {
   isReverse?: boolean;
@@ -10,9 +10,7 @@ type PrivateRouteProps = {
 };
 
 function PrivateRoute({isReverse = false, children}: PrivateRouteProps): JSX.Element {
-  const authorizationStatus = useSelector(
-    (state: RootState) => state.USER.authorizationStatus
-  );
+  const authorizationStatus = useSelector(getAuthorizationStatus);
 
   if (authorizationStatus === AuthorizationStatus.Unknown) {
     return <Spinner />;

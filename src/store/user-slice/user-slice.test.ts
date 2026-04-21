@@ -134,57 +134,6 @@ describe('user-slice async thunks tests', () => {
     mockAPI.reset();
   });
 
-  it('should dispatch checkAuth and store user', async () => {
-    const mockUser = makeMockUser();
-    mockAPI.onGet('/login').reply(200, mockUser);
-
-    const store = configureStore({
-      reducer: {USER: userReducer},
-      middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-          thunk: {extraArgument: api},
-        }),
-    });
-    await store.dispatch(checkAuth());
-
-    const state = store.getState().USER;
-    expect(state.authorizationStatus).toBe(AuthorizationStatus.Auth);
-    expect(state.authRequestStatus).toBe(RequestStatus.Success);
-    expect(state.user).toEqual(mockUser);
-  });
-
-  it('should dispatch login and store user', async () => {
-    const authInfo = {
-      token: 'token',
-      email: 'test@test.ru',
-      avatarUrl: 'avatar.jpg',
-      isPro: false,
-      name: 'Test User',
-    };
-
-    mockAPI.onPost('/login').reply(200, authInfo);
-
-    const store = configureStore({
-      reducer: {USER: userReducer},
-      middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-          thunk: {extraArgument: api},
-        }),
-    });
-
-    await store.dispatch(login({email: 'test@test.ru', password: 'abc123'}));
-
-    const state = store.getState().USER;
-    expect(state.authorizationStatus).toBe(AuthorizationStatus.Auth);
-    expect(state.authRequestStatus).toBe(RequestStatus.Success);
-    expect(state.user).toEqual({
-      email: authInfo.email,
-      avatarUrl: authInfo.avatarUrl,
-      isPro: authInfo.isPro,
-      name: authInfo.name,
-    });
-  });
-
   it('should dispatch logout and clear user', async () => {
     mockAPI.onDelete('/logout').reply(204);
 

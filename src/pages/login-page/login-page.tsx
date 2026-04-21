@@ -1,15 +1,16 @@
 import {FormEvent, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate, Link} from 'react-router-dom';
-import {AppDispatch, RootState} from '../../store';
+import {AppDispatch} from '../../store';
 import {login, clearAuthError} from '../../store/user-slice/user-slice';
 import {AppRoute, CITIES} from '../../const';
 import {changeCity} from '../../store/offers-slice/offers-slice';
+import {getAuthError} from '../../store/user-slice/selectors';
 
 function LoginPage(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const authError = useSelector((state: RootState) => state.USER.authError);
+  const authError = useSelector(getAuthError);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');

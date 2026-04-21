@@ -1,8 +1,10 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {AppDispatch, RootState} from '../../store';
+import {AppDispatch} from '../../store';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import {logout} from '../../store/user-slice/user-slice';
+import {getFavorites} from '../../store/offers-slice/selectors';
+import {getAuthorizationStatus, getUser} from '../../store/user-slice/selectors';
 
 type HeaderProps = {
   isLoginPage?: boolean;
@@ -10,9 +12,10 @@ type HeaderProps = {
 
 function Header({isLoginPage = false}: HeaderProps): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
-  const authorizationStatus = useSelector((state: RootState) => state.USER.authorizationStatus);
-  const user = useSelector((state: RootState) => state.USER.user);
-  const favoriteOffersCount = useSelector((state: RootState) => state.OFFERS.favorites.length);
+  const favoriteOffers = useSelector(getFavorites);
+  const favoriteOffersCount = favoriteOffers.length;
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const user = useSelector(getUser);
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
 
   const handleSignOut = async () => {

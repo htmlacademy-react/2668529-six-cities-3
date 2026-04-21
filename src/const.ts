@@ -47,6 +47,7 @@ const APIRoute = {
   Favorites: '/favorite',
   Login: '/login',
   Logout: '/logout',
+  Comments: '/comments',
 } as const;
 
 export {AuthorizationStatus, AppRoute, CITIES, SortType, SORT_OPTIONS, RequestStatus, APIRoute};

@@ -7,19 +7,20 @@ import Sorting from '../../components/sorting/sorting';
 import Spinner from '../../components/spinner/spinner';
 import MainEmpty from '../../components/main-empty/main-empty';
 import {CITIES, SortType, RequestStatus} from '../../const';
-import {RootState, AppDispatch} from '../../store';
+import {AppDispatch} from '../../store';
 import {changeCity} from '../../store/offers-slice/offers-slice';
 import {getOffersByCity, sortOffers} from '../../utils/offers-utils';
+import {getCurrentCity, getOffers, getOffersRequestStatus, getOffersError, getFavoriteChangeError} from '../../store/offers-slice/selectors';
 
 function MainPage(): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
   const [currentSort, setCurrentSort] = useState<SortType>(SortType.Popular);
   const dispatch = useDispatch<AppDispatch>();
-  const currentCity = useSelector((state: RootState) => state.OFFERS.currentCity);
-  const offers = useSelector((state: RootState) => state.OFFERS.offers);
-  const offersRequestStatus = useSelector((state: RootState) => state.OFFERS.offersRequestStatus);
-  const offersError = useSelector((state: RootState) => state.OFFERS.offersError);
-  const favoriteChangeError = useSelector((state: RootState) => state.OFFERS.favoriteChangeError);
+  const currentCity = useSelector(getCurrentCity);
+  const offers = useSelector(getOffers);
+  const offersRequestStatus = useSelector(getOffersRequestStatus);
+  const offersError = useSelector(getOffersError);
+  const favoriteChangeError = useSelector(getFavoriteChangeError);
 
   const handleCityChange = useCallback((city: string) => {
     dispatch(changeCity(city));

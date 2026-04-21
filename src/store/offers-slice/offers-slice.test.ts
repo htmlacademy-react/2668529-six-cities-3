@@ -39,6 +39,9 @@ describe('offers-slice reducer tests', () => {
     offersRequestStatus: RequestStatus.Idle,
     favoritesRequestStatus: RequestStatus.Idle,
     favoriteChangingStatus: RequestStatus.Idle,
+    offersError: null,
+    favoritesError: null,
+    favoriteChangeError: null,
   };
 
   it('should return initial state with empty action', () => {
@@ -192,6 +195,9 @@ describe('offers-slice async thunks tests', () => {
           offersRequestStatus: RequestStatus.Idle,
           favoritesRequestStatus: RequestStatus.Idle,
           favoriteChangingStatus: RequestStatus.Idle,
+          offersError: null,
+          favoritesError: null,
+          favoriteChangeError: null,
         },
       },
       middleware: (getDefaultMiddleware) =>

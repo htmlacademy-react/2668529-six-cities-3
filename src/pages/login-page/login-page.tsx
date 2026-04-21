@@ -1,16 +1,18 @@
 import {FormEvent, useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate, Link} from 'react-router-dom';
-import {AppDispatch} from '../../store';
-import {login} from '../../store/user-slice/user-slice';
+import {AppDispatch, RootState} from '../../store';
+import {login, clearAuthError} from '../../store/user-slice/user-slice';
 import {AppRoute, CITIES} from '../../const';
 import {changeCity} from '../../store/offers-slice/offers-slice';
 
 function LoginPage(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const authError = useSelector((state: RootState) => state.USER.authError);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [randomCity] = useState(
     () => CITIES[Math.floor(Math.random() * CITIES.length)]
   );
@@ -19,10 +21,16 @@ function LoginPage(): JSX.Element {
     evt.preventDefault();
     const isPasswordValid = password.trim().length > 0 && /^(?=.*[A-Za-z])(?=.*\d).+$/.test(password);
     if (!isPasswordValid) {
+      setPasswordError('Password must contain at least one letter and one number');
       return;
     }
-    await dispatch(login({email, password})).unwrap();
-    navigate(AppRoute.Root);
+    setPasswordError('');
+    try {
+      await dispatch(login({email, password})).unwrap();
+      navigate(AppRoute.Root);
+    } catch (error) {
+      void error;
+    }
   };
 
   const handleCityClick = () => {
@@ -50,7 +58,10 @@ function LoginPage(): JSX.Element {
                 name="email"
                 placeholder="Email"
                 value={email}
-                onChange={(evt) => setEmail(evt.target.value)}
+                onChange={(evt) => {
+                  setEmail(evt.target.value);
+                  dispatch(clearAuthError());
+                }}
                 required
               />
             </div>
@@ -62,10 +73,26 @@ function LoginPage(): JSX.Element {
                 name="password"
                 placeholder="Password"
                 value={password}
-                onChange={(evt) => setPassword(evt.target.value)}
+                onChange={(evt) => {
+                  setPassword(evt.target.value);
+                  setPasswordError('');
+                  dispatch(clearAuthError());
+                }}
                 required
               />
             </div>
+
+            {passwordError && (
+              <p style={{color: '#d9534f', marginTop: '8px'}}>
+                {passwordError}
+              </p>
+            )}
+
+            {authError && (
+              <p style={{color: '#d9534f', marginTop: '8px'}}>
+                {authError}
+              </p>
+            )}
 
             <button className="login__submit form__submit button" type="submit">
               Sign in

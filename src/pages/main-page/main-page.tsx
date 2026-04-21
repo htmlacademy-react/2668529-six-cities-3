@@ -18,6 +18,8 @@ function MainPage(): JSX.Element {
   const currentCity = useSelector((state: RootState) => state.OFFERS.currentCity);
   const offers = useSelector((state: RootState) => state.OFFERS.offers);
   const offersRequestStatus = useSelector((state: RootState) => state.OFFERS.offersRequestStatus);
+  const offersError = useSelector((state: RootState) => state.OFFERS.offersError);
+  const favoriteChangeError = useSelector((state: RootState) => state.OFFERS.favoriteChangeError);
 
   const handleCityChange = useCallback((city: string) => {
     dispatch(changeCity(city));
@@ -29,6 +31,20 @@ function MainPage(): JSX.Element {
   const sortedOffers = useMemo(() => sortOffers(filteredOffers, currentSort), [filteredOffers, currentSort]);
   const isEmpty = sortedOffers.length === 0;
   const placesToStayText = sortedOffers.length === 1 ? 'place' : 'places';
+
+  const serverErrorMessage = (offersError || favoriteChangeError) ? (
+    <div
+      style={{
+        padding: '12px',
+        marginBottom: '20px',
+        textAlign: 'center',
+        color: '#fff',
+        backgroundColor: '#d9534f',
+      }}
+    >
+      {offersError ?? favoriteChangeError}
+    </div>
+  ) : null;
 
   if (offersRequestStatus === RequestStatus.Loading) {
     return <Spinner />;
@@ -45,6 +61,8 @@ function MainPage(): JSX.Element {
           onCityClick={handleCityChange}
         />
 
+        {serverErrorMessage}
+
         <MainEmpty city={currentCity} />
       </main>
     );
@@ -59,6 +77,8 @@ function MainPage(): JSX.Element {
         currentCity={currentCity}
         onCityClick={handleCityChange}
       />
+
+      {serverErrorMessage}
 
       <div className="cities">
         <div className="cities__places-container container">

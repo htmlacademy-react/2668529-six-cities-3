@@ -10,6 +10,9 @@ type OffersState = {
   offersRequestStatus: RequestStatus;
   favoritesRequestStatus: RequestStatus;
   favoriteChangingStatus: RequestStatus;
+  offersError: string | null;
+  favoritesError: string | null;
+  favoriteChangeError: string | null;
 };
 
 const initialState: OffersState = {
@@ -19,6 +22,9 @@ const initialState: OffersState = {
   offersRequestStatus: RequestStatus.Idle,
   favoritesRequestStatus: RequestStatus.Idle,
   favoriteChangingStatus: RequestStatus.Idle,
+  offersError: null,
+  favoritesError: null,
+  favoriteChangeError: null,
 };
 
 export const fetchOffers = createAsyncThunk<
@@ -74,29 +80,37 @@ const offersSlice = createSlice({
     builder
       .addCase(fetchOffers.pending, (state) => {
         state.offersRequestStatus = RequestStatus.Loading;
+        state.offersError = null;
       })
       .addCase(fetchOffers.fulfilled, (state, action) => {
         state.offers = action.payload;
         state.offersRequestStatus = RequestStatus.Success;
+        state.offersError = null;
       })
       .addCase(fetchOffers.rejected, (state) => {
         state.offersRequestStatus = RequestStatus.Failed;
+        state.offersError = 'Failed to load offers. Please try again later.';
       })
       .addCase(fetchFavorites.pending, (state) => {
         state.favoritesRequestStatus = RequestStatus.Loading;
+        state.favoritesError = null;
       })
       .addCase(fetchFavorites.fulfilled, (state, action) => {
         state.favorites = action.payload;
         state.favoritesRequestStatus = RequestStatus.Success;
+        state.favoritesError = null;
       })
       .addCase(fetchFavorites.rejected, (state) => {
         state.favoritesRequestStatus = RequestStatus.Failed;
+        state.favoritesError = 'Failed to load favorites. Please try again later.';
       })
       .addCase(changeFavoriteStatus.pending, (state) => {
         state.favoriteChangingStatus = RequestStatus.Loading;
+        state.favoriteChangeError = null;
       })
       .addCase(changeFavoriteStatus.fulfilled, (state, action) => {
         state.favoriteChangingStatus = RequestStatus.Success;
+        state.favoriteChangeError = null;
 
         state.offers = state.offers.map((offer) =>
           offer.id === action.payload.id ? action.payload : offer
@@ -118,6 +132,7 @@ const offersSlice = createSlice({
       })
       .addCase(changeFavoriteStatus.rejected, (state) => {
         state.favoriteChangingStatus = RequestStatus.Failed;
+        state.favoriteChangeError = 'Failed to update favorite status. Please try again later.';
       });
   }
 });

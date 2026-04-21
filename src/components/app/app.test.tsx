@@ -58,6 +58,9 @@ describe('Application Routing Tests', () => {
           offersRequestStatus: RequestStatus.Success,
           favoritesRequestStatus: RequestStatus.Success,
           favoriteChangingStatus: RequestStatus.Idle,
+          offersError: null,
+          favoritesError: null,
+          favoriteChangeError: null,
         },
         OFFER: {
           currentOffer: null,
@@ -73,6 +76,7 @@ describe('Application Routing Tests', () => {
           authorizationStatus: authStatus,
           authRequestStatus: RequestStatus.Success,
           user: null,
+          authError: null,
         },
       },
     });

@@ -15,13 +15,34 @@ function FavoritesPage(): JSX.Element {
   const favoriteOffers = useSelector((state: RootState) => state.OFFERS.favorites);
   const favoritesRequestStatus = useSelector((state: RootState) => state.OFFERS.favoritesRequestStatus);
   const authorizationStatus = useSelector((state: RootState) => state.USER.authorizationStatus);
+  const favoritesError = useSelector((state: RootState) => state.OFFERS.favoritesError);
+  const favoriteChangeError = useSelector((state: RootState) => state.OFFERS.favoriteChangeError);
+
+  const serverErrorMessage = (favoritesError || favoriteChangeError) ? (
+    <div
+      style={{
+        padding: '12px',
+        marginBottom: '20px',
+        textAlign: 'center',
+        color: '#fff',
+        backgroundColor: '#d9534f',
+      }}
+    >
+      {favoritesError ?? favoriteChangeError}
+    </div>
+  ) : null;
 
   if (favoritesRequestStatus === RequestStatus.Loading) {
     return <Spinner />;
   }
 
   if (favoriteOffers.length === 0) {
-    return <FavoritesEmpty />;
+    return (
+      <>
+        {serverErrorMessage}
+        <FavoritesEmpty />
+      </>
+    );
   }
 
   const groupedFavoriteOffers = groupFavoriteOffersByCity(favoriteOffers);
@@ -55,6 +76,8 @@ function FavoritesPage(): JSX.Element {
       <div className="page__favorites-container container">
         <section className="favorites">
           <h1 className="favorites__title">Saved listing</h1>
+
+          {serverErrorMessage}
 
           <ul className="favorites__list">
             {cityNames.map((cityName) => (

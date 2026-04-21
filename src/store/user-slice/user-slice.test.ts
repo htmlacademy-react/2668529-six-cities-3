@@ -24,6 +24,7 @@ describe('user-slice reducer tests', () => {
     authorizationStatus: AuthorizationStatus.Unknown,
     authRequestStatus: RequestStatus.Idle,
     user: null,
+    authError: null,
   };
 
   it('should return initial state with empty action', () => {
@@ -194,6 +195,7 @@ describe('user-slice async thunks tests', () => {
           authorizationStatus: AuthorizationStatus.Auth,
           authRequestStatus: RequestStatus.Idle,
           user: makeMockUser(),
+          authError: null,
         },
       },
       middleware: (getDefaultMiddleware) =>

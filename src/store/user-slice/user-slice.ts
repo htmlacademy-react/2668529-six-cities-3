@@ -14,6 +14,7 @@ type UserState = {
   authorizationStatus: AuthorizationStatus;
   authRequestStatus: RequestStatus;
   user: UserData | null;
+  authError: string | null;
 };
 
 type AuthData = {
@@ -33,6 +34,7 @@ const initialState: UserState = {
   authorizationStatus: AuthorizationStatus.Unknown,
   authRequestStatus: RequestStatus.Idle,
   user: null,
+  authError: null,
 };
 
 export const checkAuth = createAsyncThunk<
@@ -81,7 +83,11 @@ export const logout = createAsyncThunk<
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    clearAuthError: (state) => {
+      state.authError = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(checkAuth.pending, (state) => {
@@ -99,16 +105,19 @@ const userSlice = createSlice({
       })
       .addCase(login.pending, (state) => {
         state.authRequestStatus = RequestStatus.Loading;
+        state.authError = null;
       })
       .addCase(login.fulfilled, (state, action) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
         state.authRequestStatus = RequestStatus.Success;
         state.user = action.payload;
+        state.authError = null;
       })
       .addCase(login.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
         state.authRequestStatus = RequestStatus.Failed;
         state.user = null;
+        state.authError = 'Failed to sign in. Please check your credentials or try again later.';
       })
       .addCase(logout.pending, (state) => {
         state.authRequestStatus = RequestStatus.Loading;
@@ -124,4 +133,5 @@ const userSlice = createSlice({
   }
 });
 
+export const {clearAuthError} = userSlice.actions;
 export default userSlice.reducer;

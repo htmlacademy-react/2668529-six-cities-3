@@ -24,6 +24,9 @@ describe('Component test: PrivateRoute', () => {
           offersRequestStatus: RequestStatus.Idle,
           favoritesRequestStatus: RequestStatus.Idle,
           favoriteChangingStatus: RequestStatus.Idle,
+          offersError: null,
+          favoritesError: null,
+          favoriteChangeError: null,
         },
         OFFER: {
           currentOffer: null,
@@ -39,6 +42,7 @@ describe('Component test: PrivateRoute', () => {
           authorizationStatus: authStatus,
           authRequestStatus: RequestStatus.Success,
           user: null,
+          authError: null,
         },
       },
     });

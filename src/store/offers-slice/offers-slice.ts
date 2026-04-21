@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {AxiosInstance} from 'axios';
 import {Offer} from '../../types/offer';
 import {RequestStatus, APIRoute} from '../../const';
+import {logout} from '../user-slice/user-slice';
 
 type OffersState = {
   offers: Offer[];
@@ -75,6 +76,13 @@ const offersSlice = createSlice({
     changeCity: (state, action: PayloadAction<string>) => {
       state.currentCity = action.payload;
     },
+    syncOffersFavoriteStatus: (state) => {
+      const favoriteIds = new Set(state.favorites.map((offer) => offer.id));
+      state.offers = state.offers.map((offer) => ({
+        ...offer,
+        isFavorite: favoriteIds.has(offer.id),
+      }));
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -133,9 +141,21 @@ const offersSlice = createSlice({
       .addCase(changeFavoriteStatus.rejected, (state) => {
         state.favoriteChangingStatus = RequestStatus.Failed;
         state.favoriteChangeError = 'Failed to update favorite status. Please try again later.';
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.favorites = [];
+        state.favoritesRequestStatus = RequestStatus.Idle;
+        state.favoriteChangingStatus = RequestStatus.Idle;
+        state.favoritesError = null;
+        state.favoriteChangeError = null;
+
+        state.offers = state.offers.map((offer) => ({
+          ...offer,
+          isFavorite: false,
+        }));
       });
   }
 });
 
-export const {changeCity} = offersSlice.actions;
+export const {changeCity, syncOffersFavoriteStatus} = offersSlice.actions;
 export default offersSlice.reducer;

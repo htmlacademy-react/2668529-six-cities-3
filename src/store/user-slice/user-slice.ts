@@ -2,6 +2,8 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {AxiosInstance} from 'axios';
 import {AuthorizationStatus, RequestStatus, APIRoute} from '../../const';
 import {saveToken, dropToken} from '../../services/token';
+import {fetchFavorites} from '../offers-slice/offers-slice';
+import {AppDispatch} from '../index';
 
 type UserData = {
   email: string;
@@ -40,11 +42,12 @@ const initialState: UserState = {
 export const checkAuth = createAsyncThunk<
   UserData,
   undefined,
-  {extra: AxiosInstance}
+  {extra: AxiosInstance; dispatch: AppDispatch}
 >(
   'user/checkAuth',
-  async (_arg, {extra: api}) => {
+  async (_arg, {extra: api, dispatch}) => {
     const {data} = await api.get<UserData>(APIRoute.Login);
+    dispatch(fetchFavorites());
     return data;
   }
 );
@@ -52,12 +55,13 @@ export const checkAuth = createAsyncThunk<
 export const login = createAsyncThunk<
   UserData,
   AuthData,
-  {extra: AxiosInstance}
+  {extra: AxiosInstance; dispatch: AppDispatch}
 >(
   'user/login',
-  async ({email, password}, {extra: api}) => {
+  async ({email, password}, {extra: api, dispatch}) => {
     const {data} = await api.post<AuthInfo>(APIRoute.Login, {email, password});
     saveToken(data.token);
+    dispatch(fetchFavorites());
 
     return {
       email: data.email,

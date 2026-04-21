@@ -11,7 +11,7 @@ import {AppRoute, AuthorizationStatus} from '../../const';
 import {AppDispatch} from '../../store';
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from 'react';
-import {fetchOffers, fetchFavorites} from '../../store/offers-slice/offers-slice';
+import {fetchOffers, fetchFavorites, syncOffersFavoriteStatus} from '../../store/offers-slice/offers-slice';
 import {checkAuth} from '../../store/user-slice/user-slice';
 import {getAuthorizationStatus} from '../../store/user-slice/selectors.ts';
 
@@ -26,7 +26,8 @@ function App(): JSX.Element {
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
-      void dispatch(fetchFavorites());
+      dispatch(fetchFavorites());
+      dispatch(syncOffersFavoriteStatus());
     }
   }, [authorizationStatus, dispatch]);
 

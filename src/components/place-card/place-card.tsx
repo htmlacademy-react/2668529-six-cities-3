@@ -19,7 +19,6 @@ function PlaceCard({offer, cardClassName, handleHover}: PlaceCardProps): JSX.Ele
   const navigate = useNavigate();
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const {id, title, type, price, previewImage, isPremium, isFavorite, rating} = offer;
-  const isBookmarkActive = authorizationStatus === AuthorizationStatus.Auth && isFavorite;
   const offerPath = generatePath(AppRoute.Offer, {id: id});
   const imageWidth = cardClassName === 'favorites' ? 150 : 260;
   const imageHeight = cardClassName === 'favorites' ? 110 : 200;
@@ -84,7 +83,7 @@ function PlaceCard({offer, cardClassName, handleHover}: PlaceCardProps): JSX.Ele
 
           <button
             className={`place-card__bookmark-button button ${
-              isBookmarkActive ? 'place-card__bookmark-button--active' : ''
+              isFavorite ? 'place-card__bookmark-button--active' : ''
             }`}
             type="button"
             onClick={(evt) => {
@@ -95,7 +94,7 @@ function PlaceCard({offer, cardClassName, handleHover}: PlaceCardProps): JSX.Ele
               <use xlinkHref="#icon-bookmark" />
             </svg>
             <span className="visually-hidden">
-              {isBookmarkActive ? 'In bookmarks' : 'To bookmarks'}
+              {isFavorite ? 'In bookmarks' : 'To bookmarks'}
             </span>
           </button>
         </div>

@@ -42,4 +42,11 @@ const SORT_OPTIONS = [
   SortType.TopRatedFirst,
 ];
 
-export {AuthorizationStatus, AppRoute, CITIES, SortType, SORT_OPTIONS, RequestStatus};
+const APIRoute = {
+  Offers: '/offers',
+  Favorites: '/favorite',
+  Login: '/login',
+  Logout: '/logout',
+} as const;
+
+export {AuthorizationStatus, AppRoute, CITIES, SortType, SORT_OPTIONS, RequestStatus, APIRoute};

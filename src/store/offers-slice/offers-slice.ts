@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {AxiosInstance} from 'axios';
 import {Offer} from '../../types/offer';
-import {RequestStatus} from '../../const';
+import {RequestStatus, APIRoute} from '../../const';
 
 type OffersState = {
   offers: Offer[];
@@ -34,7 +34,7 @@ export const fetchOffers = createAsyncThunk<
 >(
   'offers/fetchOffers',
   async (_arg, {extra: api}) => {
-    const {data} = await api.get<Offer[]>('/offers');
+    const {data} = await api.get<Offer[]>(APIRoute.Offers);
     return data;
   }
 );
@@ -46,7 +46,7 @@ export const fetchFavorites = createAsyncThunk<
 >(
   'offers/fetchFavorites',
   async (_arg, {extra: api}) => {
-    const {data} = await api.get<Offer[]>('/favorite');
+    const {data} = await api.get<Offer[]>(APIRoute.Favorites);
     return data;
   }
 );

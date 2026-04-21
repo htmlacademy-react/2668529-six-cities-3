@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {AxiosInstance} from 'axios';
-import {AuthorizationStatus, RequestStatus} from '../../const';
+import {AuthorizationStatus, RequestStatus, APIRoute} from '../../const';
 import {saveToken, dropToken} from '../../services/token';
 
 type UserData = {
@@ -44,7 +44,7 @@ export const checkAuth = createAsyncThunk<
 >(
   'user/checkAuth',
   async (_arg, {extra: api}) => {
-    const {data} = await api.get<UserData>('/login');
+    const {data} = await api.get<UserData>(APIRoute.Login);
     return data;
   }
 );
@@ -56,7 +56,7 @@ export const login = createAsyncThunk<
 >(
   'user/login',
   async ({email, password}, {extra: api}) => {
-    const {data} = await api.post<AuthInfo>('/login', {email, password});
+    const {data} = await api.post<AuthInfo>(APIRoute.Login, {email, password});
     saveToken(data.token);
 
     return {
@@ -75,7 +75,7 @@ export const logout = createAsyncThunk<
 >(
   'user/logout',
   async (_arg, {extra: api}) => {
-    await api.delete('/logout');
+    await api.delete(APIRoute.Logout);
     dropToken();
   }
 );

@@ -15,6 +15,11 @@ type OffersState = {
   favoriteChangeError: string | null;
 };
 
+type ChangeFavoriteStatusData = {
+  offerId: string;
+  status: 1 | 0;
+};
+
 const initialState: OffersState = {
   offers: [],
   favorites: [],
@@ -51,11 +56,6 @@ export const fetchFavorites = createAsyncThunk<
   }
 );
 
-type ChangeFavoriteStatusData = {
-  offerId: string;
-  status: 1 | 0;
-};
-
 export const changeFavoriteStatus = createAsyncThunk<
   Offer,
   ChangeFavoriteStatusData,
@@ -63,7 +63,7 @@ export const changeFavoriteStatus = createAsyncThunk<
 >(
   'offers/changeFavoriteStatus',
   async ({offerId, status}, {extra: api}) => {
-    const {data} = await api.post<Offer>(`/favorite/${offerId}/${status}`);
+    const {data} = await api.post<Offer>(`${APIRoute.Favorites}/${offerId}/${status}`);
     return data;
   }
 );

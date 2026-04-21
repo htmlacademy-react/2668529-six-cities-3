@@ -7,12 +7,6 @@ export const getReviews = (state: RootState) => state.OFFER.reviews;
 export const getOfferRequestStatus = (state: RootState) =>
   state.OFFER.offerRequestStatus;
 
-export const getNearbyRequestStatus = (state: RootState) =>
-  state.OFFER.nearbyRequestStatus;
-
-export const getReviewsRequestStatus = (state: RootState) =>
-  state.OFFER.reviewsRequestStatus;
-
 export const getReviewSendingRequestStatus = (state: RootState) =>
   state.OFFER.reviewSendingRequestStatus;
 

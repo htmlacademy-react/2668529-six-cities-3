@@ -1,8 +1,9 @@
 import {ChangeEvent, FormEvent, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../../store';
+import {AppDispatch} from '../../store';
 import {sendReview} from '../../store/offer-slice/offer-slice';
 import {RequestStatus} from '../../const';
+import {getReviewSendingRequestStatus, getReviewSendingRequestError} from '../../store/offer-slice/selectors.ts';
 
 const MIN_REVIEW_LENGTH = 50;
 const MAX_REVIEW_LENGTH = 300;
@@ -13,8 +14,8 @@ type ReviewFormProps = {
 
 function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
-  const reviewSendingRequestStatus = useSelector((state: RootState) => state.OFFER.reviewSendingRequestStatus);
-  const reviewSendingRequestError = useSelector((state: RootState) => state.OFFER.reviewSendingRequestError);
+  const reviewSendingRequestStatus = useSelector(getReviewSendingRequestStatus);
+  const reviewSendingRequestError = useSelector(getReviewSendingRequestError);
   const isReviewSending = reviewSendingRequestStatus === RequestStatus.Loading;
   const [review, setReview] = useState('');
   const [rating, setRating] = useState(0);
